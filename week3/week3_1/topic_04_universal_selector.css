@@ -1,0 +1,46 @@
+/* ── The classic CSS reset using * ── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    /* Includes padding and border in width calculations */
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Base Styles ── */
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #15803d;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+}
+
+p {
+    color: #475569;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #15803d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Avoid this — affects every element */
+/* * { color: blue; } ← too aggressive! */

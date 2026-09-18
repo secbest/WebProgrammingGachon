@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 21 — display: flex</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 32px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            background-color: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .flex-item {
+            background-color: #15803d;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-container">
+        <div class="flex-item">Item 1</div>
+        <div class="flex-item">Item 2</div>
+        <div class="flex-item">Item 3</div>
+    </div>
+</body>
+
+</html>

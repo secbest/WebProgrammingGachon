@@ -1,0 +1,31 @@
+/* ── Reset & Base Setup ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+  padding: 48px 20px;
+}
+
+/* ── Topic 03 Declarations ── */
+h1 {
+  color: #15803d;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+p {
+  color: #334155;
+  line-height: 1.7;
+  max-width: 65ch;
+  margin-inline: auto;
+  text-align: center;
+}

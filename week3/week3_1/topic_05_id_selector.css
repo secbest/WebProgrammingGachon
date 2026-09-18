@@ -1,0 +1,36 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    padding: 40px 20px;
+}
+
+/* ID selectors start with '#' and have high specificity */
+#hero-banner {
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+#main-title {
+    color: #15803d;
+    font-size: 2rem;
+    border-left: 4px solid #10b981;
+    padding-left: 12px;
+    margin-bottom: 12px;
+}
+
+p {
+    color: #334155;
+    line-height: 1.6;
+}

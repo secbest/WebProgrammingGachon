@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 11 — RGB Color Values</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 32px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .rgb-solid {
+            background-color: rgb(21, 128, 61);
+            color: #fff;
+        }
+
+        .rgba-alpha {
+            background-color: rgba(21, 128, 61, 0.15);
+            color: #15803d;
+            border: 1px solid rgba(21, 128, 61, 0.3);
+        }
+
+        .overlay {
+            background-color: rgba(15, 23, 42, 0.85);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card rgb-solid">Solid RGB: rgb(21, 128, 61)</div>
+    <div class="card rgba-alpha">Alpha Translucent: rgba(21, 128, 61, 0.15)</div>
+    <div class="card overlay">Overlay: rgba(15, 23, 42, 0.85)</div>
+</body>
+
+</html>

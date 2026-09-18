@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 18 — Box Model Width Calculation</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 32px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .demo-content {
+            box-sizing: content-box;
+            width: 250px;
+            padding: 15px;
+            border: 5px solid #10b981;
+            background: #ecfdf5;
+            margin-bottom: 20px;
+        }
+
+        /* total = 200 + 15*2 + 5*2 = 240px */
+
+        .demo-border {
+            box-sizing: border-box;
+            width: 250px;
+            padding: 15px;
+            border: 5px solid #6366f1;
+            background: #eef2ff;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="demo-content">content-box (250px)</div>
+    <p>Rendered width = 250 + (15×2) + (5×2) = <strong>290px</strong></p>
+
+    <div class="demo-border" style="margin-top: 24px;">border-box (250px)</div>
+    <p>Rendered width = exactly <strong>250px</strong></p>
+</body>
+
+</html>

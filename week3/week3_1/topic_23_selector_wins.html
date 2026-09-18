@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 23 — Which Selector Wins?</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 32px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .box p {
+            color: #64748b;
+        }
+
+        .box p.alert {
+            color: #dc2626;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <p>Standard paragraph inside box.</p>
+        <p class="alert">Targeted via .box p.alert (higher specificity wins).</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 22 — CSS Specificity</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 32px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        p {
+            color: #64748b;
+        }
+
+        /* Type selector: (0,0,1) */
+        .note {
+            color: #2563eb;
+        }
+
+        /* Class selector: (0,1,0) */
+        #priority {
+            color: #15803d;
+        }
+
+        /* ID selector: (1,0,0) - Wins */
+    </style>
+</head>
+
+<body>
+    <p class="note" id="priority">
+        Specificity order: ID wins over class, class wins over type.
+    </p>
+</body>
+
+</html>
