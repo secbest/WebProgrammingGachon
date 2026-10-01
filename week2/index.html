@@ -5,33 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 2 - Web Programming</title>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; }
-    a { display: block; padding: 10px; margin: 8px 0; background: #eef; border-radius: 8px; text-decoration: none; color: #223; }
-    a:hover { background: #dde; }
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --text: #1d2430;
+      --muted: #5b6678;
+      --primary: #2455f5;
+      --primary-hover: #1a45d1;
+      --border: #d8e0ee;
+      --shadow: 0 10px 30px rgba(20, 35, 70, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+    }
+    .container {
+      width: min(900px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 1.8rem; }
+    .back-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+    #search {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .section {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fafcff;
+    }
+    h2 { margin: 0 0 12px; font-size: 1.1rem; }
+    .item-link {
+      display: block;
+      padding: 10px 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .item-link:hover { background: var(--primary-hover); }
+    #empty-state {
+      margin-top: 14px;
+      color: var(--muted);
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Week 2</h1>
-  <a href="../index.html">← Back to Main</a>
+  <main class="container">
+    <div class="header">
+      <h1>Week 2</h1>
+      <a class="back-link" href="../index.html">← Back to Main</a>
+    </div>
 
-  <h2>week2_1</h2>
-  <a href="week2_1/e1.html">Exercise 1</a>
-  <a href="week2_1/e2.html">Exercise 2</a>
-  <a href="week2_1/e3.html">Exercise 3</a>
-  <a href="week2_1/e4.html">Exercise 4</a>
-  <a href="week2_1/e5.html">Exercise 5</a>
-  <a href="week2_1/e6.html">Exercise 6</a>
-  <a href="week2_1/e7.html">Exercise 7</a>
-  <a href="week2_1/e8.html">Exercise 8</a>
+    <input id="search" type="search" placeholder="Filter exercises by title or number" aria-label="Filter links">
 
-  <h2>week2_2</h2>
-  <a href="week2_2/ex_1.html">Exercise 1</a>
-  <a href="week2_2/ex_2.html">Exercise 2</a>
-  <a href="week2_2/ex_3.html">Exercise 3</a>
-  <a href="week2_2/ex_4.html">Exercise 4</a>
-  <a href="week2_2/ex_5.html">Exercise 5</a>
-  <a href="week2_2/ex_6.html">Exercise 6</a>
-  <a href="week2_2/ex_7.html">Exercise 7</a>
-  <a href="week2_2/ex_8.html">Exercise 8</a>
+    <div class="section-grid">
+      <section class="section">
+        <h2>week2_1</h2>
+        <a class="item-link" href="week2_1/e1.html">Exercise 1</a>
+        <a class="item-link" href="week2_1/e2.html">Exercise 2</a>
+        <a class="item-link" href="week2_1/e3.html">Exercise 3</a>
+        <a class="item-link" href="week2_1/e4.html">Exercise 4</a>
+        <a class="item-link" href="week2_1/e5.html">Exercise 5</a>
+        <a class="item-link" href="week2_1/e6.html">Exercise 6</a>
+        <a class="item-link" href="week2_1/e7.html">Exercise 7</a>
+        <a class="item-link" href="week2_1/e8.html">Exercise 8</a>
+      </section>
+
+      <section class="section">
+        <h2>week2_2</h2>
+        <a class="item-link" href="week2_2/ex_1.html">Exercise 1</a>
+        <a class="item-link" href="week2_2/ex_2.html">Exercise 2</a>
+        <a class="item-link" href="week2_2/ex_3.html">Exercise 3</a>
+        <a class="item-link" href="week2_2/ex_4.html">Exercise 4</a>
+        <a class="item-link" href="week2_2/ex_5.html">Exercise 5</a>
+        <a class="item-link" href="week2_2/ex_6.html">Exercise 6</a>
+        <a class="item-link" href="week2_2/ex_7.html">Exercise 7</a>
+        <a class="item-link" href="week2_2/ex_8.html">Exercise 8</a>
+      </section>
+    </div>
+
+    <p id="empty-state">No matching exercises found.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById("search");
+    const links = [...document.querySelectorAll(".item-link")];
+    const sections = [...document.querySelectorAll(".section")];
+    const emptyState = document.getElementById("empty-state");
+
+    search.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach((link) => {
+        const visible = link.textContent.toLowerCase().includes(query) || link.getAttribute("href").toLowerCase().includes(query);
+        link.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      sections.forEach((section) => {
+        const hasVisible = [...section.querySelectorAll(".item-link")].some((item) => item.style.display !== "none");
+        section.style.display = hasVisible ? "block" : "none";
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
 </body>
 </html>
