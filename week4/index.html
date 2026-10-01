@@ -5,17 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 4 - Web Programming</title>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; }
-    a { display: block; padding: 10px; margin: 8px 0; background: #eef; border-radius: 8px; text-decoration: none; color: #223; }
-    a:hover { background: #dde; }
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --text: #1d2430;
+      --muted: #5b6678;
+      --primary: #2455f5;
+      --primary-hover: #1a45d1;
+      --border: #d8e0ee;
+      --shadow: 0 10px 30px rgba(20, 35, 70, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+    }
+    .container {
+      width: min(900px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 1.8rem; }
+    .back-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+    #search {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+    }
+    .link-list {
+      display: grid;
+      gap: 10px;
+    }
+    .item-link {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .item-link:hover { background: var(--primary-hover); }
+    #empty-state {
+      margin-top: 14px;
+      color: var(--muted);
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Week 4</h1>
-  <a href="../index.html">← Back to Main</a>
-  <a href="exercise_E1_click_counter.html">Exercise 1 - Click Counter</a>
-  <a href="exercise_E2_class_toggle.html">Exercise 2 - Class Toggle</a>
-  <a href="exercise_E3_live_to_do_list.html">Exercise 3 - Live To-Do List</a>
-  <a href="exercise_E4_event_delegation.html">Exercise 4 - Event Delegation</a>
+  <main class="container">
+    <div class="header">
+      <h1>Week 4</h1>
+      <a class="back-link" href="../index.html">← Back to Main</a>
+    </div>
+
+    <input id="search" type="search" placeholder="Filter exercises by title" aria-label="Filter links">
+
+    <nav class="link-list" aria-label="Week 4 exercises">
+      <a class="item-link" href="exercise_E1_click_counter.html">Exercise 1 - Click Counter</a>
+      <a class="item-link" href="exercise_E2_class_toggle.html">Exercise 2 - Class Toggle</a>
+      <a class="item-link" href="exercise_E3_live_to_do_list.html">Exercise 3 - Live To-Do List</a>
+      <a class="item-link" href="exercise_E4_event_delegation.html">Exercise 4 - Event Delegation</a>
+    </nav>
+
+    <p id="empty-state">No matching exercises found.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById("search");
+    const links = [...document.querySelectorAll(".item-link")];
+    const emptyState = document.getElementById("empty-state");
+
+    search.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach((link) => {
+        const visible = link.textContent.toLowerCase().includes(query) || link.getAttribute("href").toLowerCase().includes(query);
+        link.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
 </body>
 </html>
