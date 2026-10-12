@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 5 - E6 Repeat 5 Times (for)</title>
+    <style>
+        ul { list-style: none; padding: 0; max-width: 280px; margin: 16px auto; }
+        li { padding: 8px 14px; margin: 6px 0; border-radius: 8px; background: #eef2ff; font-weight: 600; }
+    </style>
+</head>
+
+<body style="font-family:system-ui;padding:24px;text-align:center">
+    <h2>Repeat 5 Times</h2>
+    <button id="run" style="
+    padding:10px 22px;font-size:16px;border:none;
+    background:#1a56db;color:white;border-radius:8px;cursor:pointer">
+        Run Loop
+    </button>
+
+    <ul id="steps"></ul>
+
+    <script>
+        const stepsEl = document.querySelector('#steps');
+
+        document.querySelector('#run').addEventListener('click', () => {
+            stepsEl.innerHTML = '';
+
+            // Repeat 5 times
+            for (let i = 1; i <= 5; i++) {
+                console.log('Step ' + i);
+                const li = document.createElement('li');
+                li.textContent = 'Step ' + i;
+                stepsEl.appendChild(li);
+            }
+        });
+    </script>
+</body>
+
+</html>
