@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 5 - Web Programming</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --text: #1d2430;
+      --muted: #5b6678;
+      --primary: #2455f5;
+      --primary-hover: #1a45d1;
+      --border: #d8e0ee;
+      --shadow: 0 10px 30px rgba(20, 35, 70, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+    }
+    .container {
+      width: min(900px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 1.8rem; }
+    .back-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+    #search {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+    }
+    .link-list {
+      display: grid;
+      gap: 10px;
+    }
+    .item-link {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .item-link:hover { background: var(--primary-hover); }
+    #empty-state {
+      margin-top: 14px;
+      color: var(--muted);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="header">
+      <h1>Week 5</h1>
+      <a class="back-link" href="../index.html">← Back to Main</a>
+    </div>
+
+    <input id="search" type="search" placeholder="Filter exercises by title" aria-label="Filter links">
+
+    <nav class="link-list" aria-label="Week 5 exercises">
+      <a class="item-link" href="exercise_E1_grade_checker.html">Exercise 1 - Grade Checker (if / else)</a>
+      <a class="item-link" href="exercise_E2_even_odd_age.html">Exercise 2 - Even/Odd and Age Group (conditions)</a>
+      <a class="item-link" href="exercise_E3_multiplication_table.html">Exercise 3 - Multiplication Table (for loop)</a>
+      <a class="item-link" href="exercise_E4_fizzbuzz.html">Exercise 4 - FizzBuzz (loop + conditions)</a>
+    </nav>
+
+    <p id="empty-state">No matching exercises found.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById("search");
+    const links = [...document.querySelectorAll(".item-link")];
+    const emptyState = document.getElementById("empty-state");
+
+    search.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach((link) => {
+        const visible = link.textContent.toLowerCase().includes(query) || link.getAttribute("href").toLowerCase().includes(query);
+        link.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
+</body>
+</html>

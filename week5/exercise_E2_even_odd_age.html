@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 5 - E2 Even/Odd and Age Group (conditions)</title>
+</head>
+
+<body style="font-family:system-ui;padding:24px;text-align:center">
+    <h2>Number &amp; Age Checker</h2>
+    <input id="num" type="number" placeholder="Enter a whole number"
+        style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px">
+    <button id="go" style="
+    padding:10px 22px;font-size:16px;border:none;
+    background:#1a56db;color:white;border-radius:8px;cursor:pointer">
+        Check
+    </button>
+
+    <p id="parity" style="font-size:20px;margin:16px 0 4px"></p>
+    <p id="ageGroup" style="font-size:20px;margin:4px 0"></p>
+    <p style="font-size:13px;color:#888">The number is treated as both a number to test (even/odd) and an age.</p>
+
+    <script>
+        const input = document.querySelector('#num');
+        const parityEl = document.querySelector('#parity');
+        const ageEl = document.querySelector('#ageGroup');
+
+        document.querySelector('#go').addEventListener('click', () => {
+            const n = Number(input.value);
+
+            if (input.value === '' || !Number.isInteger(n)) {
+                parityEl.textContent = 'Please enter a whole number.';
+                ageEl.textContent = '';
+                return;
+            }
+
+            // % gives the remainder: even numbers leave 0 when divided by 2
+            parityEl.textContent = n + ' is ' + (n % 2 === 0 ? 'even' : 'odd');
+
+            // && combines two conditions
+            if (n < 0) {
+                ageEl.textContent = 'Age group: invalid age';
+            } else if (n < 13) {
+                ageEl.textContent = 'Age group: child';
+            } else if (n >= 13 && n < 20) {
+                ageEl.textContent = 'Age group: teenager';
+            } else if (n >= 20 && n < 65) {
+                ageEl.textContent = 'Age group: adult';
+            } else {
+                ageEl.textContent = 'Age group: senior';
+            }
+        });
+    </script>
+</body>
+
+</html>

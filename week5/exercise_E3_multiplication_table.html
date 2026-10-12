@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 5 - E3 Multiplication Table (for loop)</title>
+    <style>
+        table { border-collapse: collapse; margin: 16px auto; }
+        td { border: 1px solid #ccc; padding: 6px 14px; text-align: right; }
+        tr:nth-child(even) td { background: #f0f4ff; }
+    </style>
+</head>
+
+<body style="font-family:system-ui;padding:24px;text-align:center">
+    <h2>Multiplication Table</h2>
+    <input id="base" type="number" value="7" min="1" max="20"
+        style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px;width:90px">
+    <button id="build" style="
+    padding:10px 22px;font-size:16px;border:none;
+    background:#1a56db;color:white;border-radius:8px;cursor:pointer">
+        Build table
+    </button>
+
+    <table id="table"></table>
+
+    <script>
+        const baseInput = document.querySelector('#base');
+        const table = document.querySelector('#table');
+
+        function buildTable() {
+            const base = Number(baseInput.value);
+            table.innerHTML = '';
+            if (!Number.isFinite(base)) return;
+
+            // Repeat 12 times: i goes 1, 2, 3 ... 12
+            for (let i = 1; i <= 12; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td>' + base + ' × ' + i + '</td><td>' + base * i + '</td>';
+                table.appendChild(row);
+            }
+        }
+
+        document.querySelector('#build').addEventListener('click', buildTable);
+        buildTable(); // show a table on page load
+    </script>
+</body>
+
+</html>

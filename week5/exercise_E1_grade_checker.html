@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 5 - E1 Grade Checker (if / else)</title>
+</head>
+
+<body style="font-family:system-ui;padding:24px;text-align:center">
+    <h2>Grade Checker</h2>
+    <input id="score" type="number" min="0" max="100" placeholder="Score (0-100)"
+        style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px">
+    <button id="check" style="
+    padding:10px 22px;font-size:16px;border:none;
+    background:#1a56db;color:white;border-radius:8px;cursor:pointer">
+        Check
+    </button>
+
+    <p id="grade" style="font-size:48px;font-weight:bold;margin:16px 0"></p>
+    <p id="comment" style="font-size:16px;color:#666"></p>
+
+    <script>
+        const scoreInput = document.querySelector('#score');
+        const gradeEl = document.querySelector('#grade');
+        const commentEl = document.querySelector('#comment');
+
+        document.querySelector('#check').addEventListener('click', () => {
+            const score = Number(scoreInput.value);
+
+            // Reject empty or out-of-range input first
+            if (scoreInput.value === '' || score < 0 || score > 100) {
+                gradeEl.textContent = '?';
+                gradeEl.style.color = '#666';
+                commentEl.textContent = 'Please enter a score between 0 and 100.';
+                return;
+            }
+
+            let grade, comment, color;
+            if (score >= 90) {
+                grade = 'A'; comment = 'Excellent!'; color = '#16a34a';
+            } else if (score >= 80) {
+                grade = 'B'; comment = 'Good job.'; color = '#2563eb';
+            } else if (score >= 70) {
+                grade = 'C'; comment = 'Not bad.'; color = '#ca8a04';
+            } else if (score >= 60) {
+                grade = 'D'; comment = 'You passed, barely.'; color = '#ea580c';
+            } else {
+                grade = 'F'; comment = 'Time to study more.'; color = '#dc2626';
+            }
+
+            gradeEl.textContent = grade;
+            gradeEl.style.color = color;
+            commentEl.textContent = comment;
+        });
+    </script>
+</body>
+
+</html>
