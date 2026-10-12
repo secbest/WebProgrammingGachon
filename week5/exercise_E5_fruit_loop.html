@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 5 - E5 Fruit Loop (for...of)</title>
+    <style>
+        ul { list-style: none; padding: 0; max-width: 280px; margin: 16px auto; }
+        li { padding: 8px 14px; margin: 6px 0; border-radius: 8px; background: #eef2ff; font-weight: 600; }
+    </style>
+</head>
+
+<body style="font-family:system-ui;padding:24px;text-align:center">
+    <h2>Fruit Loop</h2>
+    <input id="fruitInput" type="text" placeholder="Add a fruit"
+        style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px">
+    <button id="add" style="
+    padding:10px 22px;font-size:16px;border:none;
+    background:#1a56db;color:white;border-radius:8px;cursor:pointer">
+        Add
+    </button>
+
+    <ul id="list"></ul>
+    <p id="count" style="color:#666"></p>
+
+    <script>
+        let fruits = ['apple', 'banana', 'cherry'];
+        const listEl = document.querySelector('#list');
+        const countEl = document.querySelector('#count');
+        const input = document.querySelector('#fruitInput');
+
+        function showFruits() {
+            listEl.innerHTML = '';
+
+            // Loop through an array: fruit is each item in turn
+            for (let fruit of fruits) {
+                console.log(fruit);
+                const li = document.createElement('li');
+                li.textContent = fruit;
+                listEl.appendChild(li);
+            }
+
+            countEl.textContent = fruits.length + ' fruits in the list';
+        }
+
+        function addFruit() {
+            const name = input.value.trim();
+            if (name === '') return;
+            fruits.push(name);
+            input.value = '';
+            showFruits();
+        }
+
+        document.querySelector('#add').addEventListener('click', addFruit);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addFruit();
+        });
+        showFruits();
+    </script>
+</body>
+
+</html>
