@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homework: Interactive Color Palette</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .controls input {
+            padding: 8px 12px;
+            border: 2px solid #c8d4f0;
+            border-radius: 8px;
+            width: 160px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #1a56db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #error {
+            color: #c0392b;
+            min-height: 1.2em;
+            margin: 0 0 12px;
+        }
+
+        #palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .box.expanded {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Interactive Color Palette</h1>
+    <p>Click a box to expand it. Double-click to remove it.</p>
+
+    <div class="controls">
+        <input id="color-input" type="text" placeholder="#ff8800" aria-label="Hex color">
+        <button id="add-btn">Add Color</button>
+        <button id="export-btn">Export PNG</button>
+    </div>
+    <p id="error"></p>
+
+    <div id="palette"></div>
+
+    <script>
+        const DEFAULT_COLORS = ['#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6'];
+        const STORAGE_KEY = 'colorPalette';
+
+        const palette = document.querySelector('#palette');
+        const input = document.querySelector('#color-input');
+        const error = document.querySelector('#error');
+
+        function createBox(color) {
+            const box = document.createElement('div');
+            box.className = 'box';
+            box.style.backgroundColor = color;
+            box.dataset.color = color;
+
+            // Click: expand and reveal the hex code
+            box.addEventListener('click', () => {
+                box.classList.toggle('expanded');
+                box.textContent = box.classList.contains('expanded') ? color : '';
+            });
+
+            // Double-click: remove the box
+            box.addEventListener('dblclick', () => {
+                box.remove();
+                save();
+            });
+
+            palette.appendChild(box);
+        }
+
+        function getColors() {
+            return [...palette.children].map((box) => box.dataset.color);
+        }
+
+        function save() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(getColors()));
+        }
+
+        function load() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (Array.isArray(saved)) return saved;
+            } catch (e) { }
+            return DEFAULT_COLORS;
+        }
+
+        function addColor() {
+            let value = input.value.trim();
+            if (!value.startsWith('#')) value = '#' + value;
+            if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value)) {
+                error.textContent = 'Enter a valid hex color, e.g. #ff8800';
+                return;
+            }
+            error.textContent = '';
+            createBox(value.toLowerCase());
+            save();
+            input.value = '';
+        }
+
+        // Bonus: draw the palette onto a canvas and download it as PNG
+        function exportPng() {
+            const colors = getColors();
+            if (!colors.length) return;
+            const size = 100;
+            const canvas = document.createElement('canvas');
+            canvas.width = size * colors.length;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            colors.forEach((color, i) => {
+                ctx.fillStyle = color;
+                ctx.fillRect(i * size, 0, size, size);
+            });
+            const link = document.createElement('a');
+            link.download = 'palette.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        document.querySelector('#add-btn').addEventListener('click', addColor);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') addColor(); });
+        document.querySelector('#export-btn').addEventListener('click', exportPng);
+
+        load().forEach(createBox);
+    </script>
+</body>
+
+</html>
