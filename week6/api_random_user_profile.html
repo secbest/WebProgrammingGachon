@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 6 - Random User Profiles</title>
+    <link rel="stylesheet" href="api-demo.css">
+    <style>
+        .profile { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .profile img { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--line); object-fit: cover; }
+        .profile h2 { margin: 0 0 8px; }
+        .profile p { margin: 4px 0; }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div class="header">
+            <h1>👤 Random User</h1>
+            <a class="back-link" href="index.html">← Week 6</a>
+        </div>
+        <p class="sub">Fake profiles with photos, names and emails. <span class="endpoint">randomuser.me/api</span></p>
+
+        <div class="controls">
+            <button id="new-user">New User</button>
+        </div>
+
+        <div id="panel" class="panel" aria-live="polite"></div>
+    </main>
+
+    <script src="api-demo.js"></script>
+    <script>
+        const panel = document.querySelector('#panel');
+        const btn = document.querySelector('#new-user');
+
+        async function loadUser() {
+            showLoading(panel);
+            btn.disabled = true;
+            try {
+                const data = await getJSON('https://randomuser.me/api/');
+                const u = data.results[0];
+
+                const card = el('div', 'card profile');
+                const photo = el('img');
+                photo.src = u.picture.large;
+                photo.alt = 'Photo of ' + u.name.first + ' ' + u.name.last;
+
+                const info = el('div');
+                info.append(
+                    el('h2', '', u.name.title + ' ' + u.name.first + ' ' + u.name.last),
+                    el('p', '', '📧 ' + u.email),
+                    el('p', '', '📍 ' + u.location.city + ', ' + u.location.country),
+                    el('p', '', '📞 ' + u.phone),
+                    el('p', '', '🎂 Age ' + u.dob.age)
+                );
+                card.append(photo, info);
+                panel.replaceChildren(card);
+            } catch (err) {
+                console.error(err);
+                showError(panel, 'Could not load a user. Please try again.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        btn.addEventListener('click', loadUser);
+        loadUser();
+    </script>
+</body>
+
+</html>

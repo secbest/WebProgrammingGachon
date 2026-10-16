@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 6 - Open-Meteo Weather</title>
+    <link rel="stylesheet" href="api-demo.css">
+    <style>
+        .now { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+        .now .icon { font-size: 4rem; }
+        .now .temp { font-size: 3rem; font-weight: 700; }
+        .forecast { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+        .day { text-align: center; }
+        .day .icon { font-size: 1.8rem; }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div class="header">
+            <h1>🌤️ Open-Meteo Weather</h1>
+            <a class="back-link" href="index.html">← Week 6</a>
+        </div>
+        <p class="sub">Real weather, no API key. <span class="endpoint">api.open-meteo.com/v1/forecast</span></p>
+
+        <div class="controls">
+            <select id="city" aria-label="City" style="flex:1 1 200px;padding:12px 14px;border-radius:12px;font-size:1rem;color:#eef1ff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)">
+                <option value="37.5665,126.978,Seoul" style="color:#000">Seoul</option>
+                <option value="35.1796,129.0756,Busan" style="color:#000">Busan</option>
+                <option value="35.6762,139.6503,Tokyo" style="color:#000">Tokyo</option>
+                <option value="51.5072,-0.1276,London" style="color:#000">London</option>
+                <option value="40.7128,-74.006,New York" style="color:#000">New York</option>
+            </select>
+            <button id="reload">Refresh</button>
+        </div>
+
+        <div id="panel" class="panel" aria-live="polite"></div>
+    </main>
+
+    <script src="api-demo.js"></script>
+    <script>
+        const panel = document.querySelector('#panel');
+        const citySelect = document.querySelector('#city');
+        const reloadBtn = document.querySelector('#reload');
+
+        // WMO weather codes -> emoji + label
+        function describe(code) {
+            if (code === 0) return ['☀️', 'Clear sky'];
+            if (code <= 3) return ['⛅', 'Partly cloudy'];
+            if (code <= 48) return ['🌫️', 'Fog'];
+            if (code <= 57) return ['🌦️', 'Drizzle'];
+            if (code <= 67) return ['🌧️', 'Rain'];
+            if (code <= 77) return ['❄️', 'Snow'];
+            if (code <= 82) return ['🌧️', 'Showers'];
+            if (code <= 86) return ['🌨️', 'Snow showers'];
+            return ['⛈️', 'Thunderstorm'];
+        }
+
+        async function loadWeather() {
+            const [lat, lon, name] = citySelect.value.split(',');
+            showLoading(panel);
+            reloadBtn.disabled = true;
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+                    '&current=temperature_2m,wind_speed_10m,weather_code' +
+                    '&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto';
+                const data = await getJSON(url);
+
+                const [icon, label] = describe(data.current.weather_code);
+                const now = el('div', 'card now');
+                now.append(el('div', 'icon', icon));
+                const info = el('div');
+                info.append(
+                    el('div', 'temp', Math.round(data.current.temperature_2m) + '°C'),
+                    el('p', '', name + ' · ' + label + ' · wind ' + data.current.wind_speed_10m + ' km/h')
+                );
+                now.append(info);
+
+                const forecast = el('div', 'forecast');
+                data.daily.time.forEach((date, i) => {
+                    const [dayIcon] = describe(data.daily.weather_code[i]);
+                    const day = el('div', 'card day');
+                    day.style.animationDelay = i * 0.05 + 's';
+                    const weekday = new Date(date + 'T00:00').toLocaleDateString('en-US', { weekday: 'short' });
+                    day.append(
+                        el('h3', '', weekday),
+                        el('div', 'icon', dayIcon),
+                        el('p', '', Math.round(data.daily.temperature_2m_max[i]) + '° / ' + Math.round(data.daily.temperature_2m_min[i]) + '°')
+                    );
+                    forecast.append(day);
+                });
+
+                panel.replaceChildren(now, forecast);
+            } catch (err) {
+                console.error(err);
+                showError(panel, 'Could not load the weather. Please try again.');
+            } finally {
+                reloadBtn.disabled = false;
+            }
+        }
+
+        citySelect.addEventListener('change', loadWeather);
+        reloadBtn.addEventListener('click', loadWeather);
+        loadWeather();
+    </script>
+</body>
+
+</html>

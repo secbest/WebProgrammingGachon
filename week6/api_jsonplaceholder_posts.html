@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 6 - JSONPlaceholder Posts</title>
+    <link rel="stylesheet" href="api-demo.css">
+</head>
+
+<body>
+    <main class="container">
+        <div class="header">
+            <h1>📝 JSONPlaceholder Posts</h1>
+            <a class="back-link" href="index.html">← Week 6</a>
+        </div>
+        <p class="sub">Fake blog posts + authors. <span class="endpoint">jsonplaceholder.typicode.com/posts</span></p>
+
+        <div class="controls">
+            <input id="filter" type="search" placeholder="Filter posts by title or author" aria-label="Filter posts">
+            <button id="reload">Reload</button>
+        </div>
+
+        <div id="panel" class="panel" aria-live="polite"></div>
+    </main>
+
+    <script src="api-demo.js"></script>
+    <script>
+        const panel = document.querySelector('#panel');
+        const filter = document.querySelector('#filter');
+        const reloadBtn = document.querySelector('#reload');
+        let posts = [];
+
+        function render() {
+            const query = filter.value.trim().toLowerCase();
+            const shown = posts.filter((p) =>
+                p.title.toLowerCase().includes(query) || p.author.toLowerCase().includes(query));
+
+            if (!shown.length) {
+                panel.replaceChildren(el('div', 'status', 'No matching posts.'));
+                return;
+            }
+
+            const grid = el('div', 'grid');
+            shown.forEach((post, i) => {
+                const card = el('article', 'card');
+                card.style.animationDelay = i * 0.04 + 's';
+                card.append(el('h3', '', post.title), el('p', '', post.body));
+                card.append(el('span', 'tag', '✍️ ' + post.author));
+                grid.append(card);
+            });
+            panel.replaceChildren(grid);
+        }
+
+        async function loadPosts() {
+            showLoading(panel);
+            reloadBtn.disabled = true;
+            try {
+                // Two requests in parallel: posts and users
+                const [postData, users] = await Promise.all([
+                    getJSON('https://jsonplaceholder.typicode.com/posts?_limit=12'),
+                    getJSON('https://jsonplaceholder.typicode.com/users')
+                ]);
+                const names = Object.fromEntries(users.map((u) => [u.id, u.name]));
+                posts = postData.map((p) => ({ ...p, author: names[p.userId] || 'Unknown' }));
+                render();
+            } catch (err) {
+                console.error(err);
+                showError(panel, 'Could not load posts. Please check your connection and try again.');
+            } finally {
+                reloadBtn.disabled = false;
+            }
+        }
+
+        filter.addEventListener('input', render);
+        reloadBtn.addEventListener('click', loadPosts);
+        loadPosts();
+    </script>
+</body>
+
+</html>
