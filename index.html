@@ -6,108 +6,101 @@
   <title>Web Programming - Gachon</title>
   <style>
     :root {
-      --bg: #f4f7fb;
-      --surface: #ffffff;
-      --text: #1d2430;
-      --muted: #5b6678;
-      --primary: #2455f5;
-      --primary-hover: #1a45d1;
-      --border: #d8e0ee;
-      --shadow: 0 10px 30px rgba(20, 35, 70, 0.08);
+      --bg: #eef2ff; --surface: rgba(255,255,255,.65); --text: #1d2430; --muted: #5b6678;
+      --primary: #5b5bf0; --primary-2: #ec4899; --border: rgba(255,255,255,.7);
+      --shadow: 0 20px 60px rgba(60, 50, 160, .18);
     }
     :root.dark {
-      --bg: #121826;
-      --surface: #1b2436;
-      --text: #ebf0ff;
-      --muted: #a7b2cc;
-      --primary: #7aa2ff;
-      --primary-hover: #5c89ff;
-      --border: #2f3c56;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --bg: #0b1020; --surface: rgba(24,32,54,.6); --text: #ebf0ff; --muted: #a7b2cc;
+      --primary: #8ea2ff; --primary-2: #f472b6; --border: rgba(255,255,255,.12);
+      --shadow: 0 20px 60px rgba(0,0,0,.5);
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 24px;
+      margin: 0; min-height: 100vh; padding: 24px; overflow-x: hidden;
       font-family: "Inter", "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: grid;
-      place-items: center;
+      background: var(--bg); color: var(--text);
+      display: grid; place-items: center; transition: background .4s, color .4s;
     }
+    /* drifting aurora blobs */
+    body::before, body::after {
+      content: ""; position: fixed; z-index: -1; width: 55vmax; height: 55vmax; border-radius: 50%;
+      filter: blur(80px); opacity: .55; animation: drift 18s ease-in-out infinite alternate;
+    }
+    body::before { background: #7c83ff; top: -20vmax; left: -15vmax; }
+    body::after { background: #ff7ac6; bottom: -22vmax; right: -15vmax; animation-duration: 24s; animation-direction: alternate-reverse; }
+    :root.dark body::before { background: #3b4bd8; opacity: .45; }
+    :root.dark body::after { background: #a21caf; opacity: .4; }
+    @keyframes drift { to { transform: translate(14vmax, 10vmax) scale(1.2) rotate(40deg); } }
     .container {
-      width: min(760px, 100%);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      padding: 28px;
+      width: min(760px, 100%); padding: 32px; border-radius: 28px;
+      background: var(--surface); border: 1px solid var(--border);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow); animation: rise .7s cubic-bezier(.2,.8,.2,1) both;
     }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
+    @keyframes rise { from { opacity: 0; transform: translateY(30px) scale(.97); } }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+    h1 {
+      margin: 0; font-size: 2rem; letter-spacing: -.5px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2), var(--primary));
+      background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shine 6s linear infinite;
     }
-    h1 { margin: 0; font-size: 1.8rem; }
-    .sub {
-      margin: 8px 0 20px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+    @keyframes shine { to { background-position: 200% center; } }
+    .sub { margin: 8px 0 22px; color: var(--muted); }
     #theme-toggle {
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 14px;
-      cursor: pointer;
-      font-size: 0.9rem;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      border-radius: 999px; padding: 9px 16px; cursor: pointer; font-size: .9rem;
+      transition: transform .2s, box-shadow .2s;
     }
-    #theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    #theme-toggle:hover { transform: rotate(-4deg) scale(1.06); box-shadow: 0 6px 18px rgba(0,0,0,.15); }
     #search {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 0.98rem;
-      margin-bottom: 16px;
-      background: transparent;
-      color: var(--text);
+      width: 100%; border: 1px solid var(--border); border-radius: 14px; padding: 13px 16px;
+      font-size: 1rem; margin-bottom: 18px; background: var(--surface); color: var(--text);
+      transition: box-shadow .25s, border-color .25s;
     }
-    #search:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
-    }
-    .week-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-    }
+    #search:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 25%, transparent); }
+    .week-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
     .week-link {
-      display: block;
-      padding: 16px;
-      border-radius: 14px;
-      background: var(--primary);
-      color: #fff;
-      text-decoration: none;
-      text-align: center;
-      font-weight: 600;
-      transition: transform 0.15s ease, background 0.15s ease;
+      position: relative; overflow: hidden; display: block; padding: 22px 16px; border-radius: 18px;
+      color: #fff; text-decoration: none; text-align: center; font-weight: 700; font-size: 1.1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 24px rgba(91,91,240,.3);
+      opacity: 0; animation: pop .6s cubic-bezier(.2,.9,.3,1.3) forwards;
+      transition: transform .25s, box-shadow .25s;
     }
-    .week-link:hover {
-      background: var(--primary-hover);
-      transform: translateY(-2px);
+    .week-link::after {
+      content: ""; position: absolute; inset: 0; transform: translateX(-120%) skewX(-20deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent); transition: transform .6s;
     }
-    #empty-state {
-      margin-top: 14px;
-      color: var(--muted);
-      display: none;
-      text-align: center;
+    .week-link:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 18px 36px rgba(236,72,153,.35); }
+    .week-link:hover::after { transform: translateX(120%) skewX(-20deg); }
+    @keyframes pop { from { opacity: 0; transform: translateY(24px) scale(.8); } to { opacity: 1; } }
+    #empty-state { margin-top: 14px; color: var(--muted); display: none; text-align: center; }
+    .week-link:nth-child(1) { animation-delay: 0.34s; }
+    .week-link:nth-child(2) { animation-delay: 0.43s; }
+    .week-link:nth-child(3) { animation-delay: 0.52s; }
+    .week-link:nth-child(4) { animation-delay: 0.61s; }
+    .week-link:nth-child(5) { animation-delay: 0.70s; }
+    .week-link:nth-child(6) { animation-delay: 0.79s; }
+    .week-link:nth-child(7) { animation-delay: 0.88s; }
+    .week-link:nth-child(8) { animation-delay: 0.97s; }
+
+    /* ---- glassmorphism tiles ---- */
+    .week-link {
+      color: var(--text); border: 1px solid rgba(255,255,255,.45);
+      background: linear-gradient(135deg, rgba(91,91,240,.38), rgba(236,72,153,.30));
+      backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); box-shadow: 0 8px 32px rgba(60,50,160,.25), inset 0 1px 0 rgba(255,255,255,.5);
     }
+    .week-link:hover { box-shadow: 0 16px 40px rgba(236,72,153,.35), inset 0 1px 0 rgba(255,255,255,.6); }
+    #search, #theme-toggle { backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); }
+
+    /* ---- softer tones ---- */
+    body::before, body::after { opacity: .32; }
+    :root.dark body::before, :root.dark body::after { opacity: .26; }
+    .week-link { background: linear-gradient(135deg, rgba(99,102,241,.28), rgba(20,184,166,.22)); }
+    :root.dark .week-link { color: #eef1ff; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
@@ -123,6 +116,7 @@
       <a class="week-link" href="week3/index.html" data-week="Week 3">Week 3</a>
       <a class="week-link" href="week4/index.html" data-week="Week 4">Week 4</a>
       <a class="week-link" href="week5/index.html" data-week="Week 5">Week 5</a>
+      <a class="week-link" href="week6/index.html" data-week="Week 6">Week 6</a>
     </nav>
     <p id="empty-state">No matching week found.</p>
   </main>
