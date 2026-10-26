@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 6 Friday v2 - C3 Four-Field Form (Disable Submit Until Valid)</title>
+    <style>
+        body { font-family: system-ui; padding: 28px; max-width: 420px; margin: 0 auto; }
+        .field-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+        label { font-size: 13px; font-weight: 600; }
+        input {
+            padding: 10px 14px; border: 2px solid #c8d4f0; border-radius: 8px;
+            font-size: 14px; outline: none; transition: border-color .2s;
+        }
+        input:focus { box-shadow: 0 0 0 3px rgba(26, 86, 219, .15); }
+        [role="alert"] { font-size: 12px; font-weight: 600; color: #ef4444; min-height: 16px; }
+        button {
+            width: 100%; padding: 12px; background: #1a56db; color: #fff; border: none;
+            border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer;
+            transition: opacity .2s;
+        }
+        button:disabled { cursor: not-allowed; }
+        #result { margin-top: 14px; font-weight: 700; color: #16a34a; min-height: 1.4em; }
+        .back { display: inline-block; margin-bottom: 16px; color: #1a56db; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <a class="back" href="../index.html">← Week 6</a>
+    <h2>Register</h2>
+
+    <form id="reg-form" novalidate>
+        <div class="field-group">
+            <label for="sid">Student ID</label>
+            <input type="text" id="sid" required inputmode="numeric" placeholder="202112345"
+                   aria-describedby="sid-err" aria-invalid="false">
+            <span id="sid-err" role="alert"></span>
+        </div>
+
+        <div class="field-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required placeholder="name@gachon.ac.kr"
+                   aria-describedby="email-err" aria-invalid="false">
+            <span id="email-err" role="alert"></span>
+        </div>
+
+        <div class="field-group">
+            <label for="pw">Password</label>
+            <input type="password" id="pw" required minlength="8" placeholder="At least 8 characters"
+                   aria-describedby="pw-err" aria-invalid="false">
+            <span id="pw-err" role="alert"></span>
+        </div>
+
+        <div class="field-group">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" required inputmode="tel" placeholder="010-1234-5678"
+                   aria-describedby="phone-err" aria-invalid="false">
+            <span id="phone-err" role="alert"></span>
+        </div>
+
+        <button type="submit" id="submit-btn">Register</button>
+    </form>
+    <p id="result" aria-live="polite"></p>
+
+    <script>
+        // Field references
+        const sid = document.getElementById('sid');
+        const email = document.getElementById('email');
+        const pw = document.getElementById('pw');
+        const phone = document.getElementById('phone');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Patterns
+        const SID_PATTERN = /^\d{9}$/;
+        const PHONE_PATTERN = /^\d{3}-\d{4}-\d{4}$/;
+
+        // Start disabled
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.4';
+
+        // Generic helper
+        function setErr(input, errId, msg) {
+            document.getElementById(errId).textContent = msg;
+            input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+            input.style.borderColor = msg ? '#ef4444' : (input.value ? '#22c55e' : '');
+        }
+
+        function validateSid() {
+            if (sid.validity.valueMissing) setErr(sid, 'sid-err', 'Required.');
+            else if (!SID_PATTERN.test(sid.value)) setErr(sid, 'sid-err', 'Exactly 9 digits.');
+            else setErr(sid, 'sid-err', '');
+        }
+
+        function validateEmail() {
+            if (email.validity.valueMissing) setErr(email, 'email-err', 'Required.');
+            else if (email.validity.typeMismatch) setErr(email, 'email-err', 'Valid email required.');
+            else setErr(email, 'email-err', '');
+        }
+
+        function validatePw() {
+            if (pw.validity.valueMissing) setErr(pw, 'pw-err', 'Required.');
+            else if (pw.validity.tooShort) setErr(pw, 'pw-err', 'Min. 8 characters.');
+            else setErr(pw, 'pw-err', '');
+        }
+
+        function validatePhone() {
+            if (!PHONE_PATTERN.test(phone.value)) setErr(phone, 'phone-err', 'Format: 010-1234-5678');
+            else setErr(phone, 'phone-err', '');
+        }
+
+        // Bonus: check all fields -> enable submit when everything is valid.
+        // (Checked straight from the values, so it is accurate even before a field has been touched.)
+        function updateSubmitState() {
+            const allValid = SID_PATTERN.test(sid.value)
+                && email.validity.valid
+                && pw.validity.valid
+                && PHONE_PATTERN.test(phone.value);
+            submitBtn.disabled = !allValid;
+            submitBtn.style.opacity = allValid ? '1' : '0.4';
+        }
+
+        // Wire up events
+        [
+            [sid, validateSid],
+            [email, validateEmail],
+            [pw, validatePw],
+            [phone, validatePhone]
+        ].forEach(([el, fn]) => {
+            el.addEventListener('input', () => { fn(); updateSubmitState(); });
+        });
+
+        document.getElementById('reg-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('result').textContent = '✅ Registration submitted!';
+        });
+    </script>
+</body>
+
+</html>

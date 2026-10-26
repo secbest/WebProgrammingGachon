@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 6 Friday v1 - E1 Prevent Submit &amp; Custom Error</title>
+    <style>
+        body { font-family: system-ui; padding: 28px; max-width: 380px; margin: 0 auto; }
+        label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 4px; }
+        input { width: 100%; padding: 10px 14px; border: 2px solid #c8d4f0;
+            border-radius: 8px; font-size: 14px; margin-bottom: 4px; }
+        input:focus { border-color: #1a56db; outline: none; }
+        .error { color: #dc2626; font-size: 12px; font-weight: 600; min-height: 16px; display: block; }
+        .success { color: #16a34a; font-size: 15px; font-weight: 700; margin-top: 12px; }
+        button { background: #1a56db; color: #fff; border: none;
+            padding: 11px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; margin-top: 12px; }
+        .back { display: inline-block; margin-bottom: 16px; color: #1a56db; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <a class="back" href="../index.html">← Week 6</a>
+    <h2>Login Demo</h2>
+    <form id="login-form">
+        <label for="uname">Username</label>
+        <input type="text" id="uname" placeholder="Enter username">
+        <span class="error" id="uname-error"></span>
+        <button type="submit">Log In</button>
+    </form>
+    <div class="success" id="success-msg"></div>
+
+    <script>
+        // 1. Select the elements
+        const form = document.querySelector('#login-form');
+        const uname = document.querySelector('#uname');
+        const error = document.querySelector('#uname-error');
+        const success = document.querySelector('#success-msg');
+
+        // 2. Listen for the form's 'submit' event
+        form.addEventListener('submit', (e) => {
+            // 3. Stop the page reload
+            e.preventDefault();
+
+            // 4. Empty username -> show error, clear success
+            if (uname.value.trim() === '') {
+                error.textContent = 'Username is required';
+                success.textContent = '';
+            } else {
+                // 5. Otherwise show the welcome message, clear error
+                success.textContent = 'Welcome, ' + uname.value.trim() + '!';
+                error.textContent = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

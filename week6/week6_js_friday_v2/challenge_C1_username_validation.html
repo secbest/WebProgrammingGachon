@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 6 Friday v2 - C1 Real-time Username Validation</title>
+    <style>
+        body { font-family: system-ui; padding: 28px; max-width: 400px; margin: 0 auto; }
+        .field-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-size: 13px; font-weight: 600; }
+        input {
+            padding: 10px 14px; border: 2px solid #c8d4f0; border-radius: 8px;
+            font-size: 14px; outline: none; transition: border-color .2s;
+        }
+        input:focus { box-shadow: 0 0 0 3px rgba(26, 86, 219, .15); }
+        .back { display: inline-block; margin-bottom: 16px; color: #1a56db; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <a class="back" href="../index.html">← Week 6</a>
+    <h2>Create a Username</h2>
+
+    <div class="field-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" required
+               aria-describedby="username-err"
+               aria-invalid="false"
+               placeholder="At least 3 alphanumeric chars">
+        <span id="username-err" role="alert"
+              style="color:red;font-size:12px"></span>
+    </div>
+
+    <script>
+        const usernameInput = document.getElementById('username');
+        const usernamePattern = /^[a-zA-Z0-9]{3,}$/;
+
+        function validateUsername(input) {
+            const err = document.getElementById('username-err');
+            if (input.validity.valueMissing) {
+                err.textContent = 'Username is required.';
+                input.setAttribute('aria-invalid', 'true');
+                input.style.borderColor = '#ef4444';
+            } else if (!usernamePattern.test(input.value)) {
+                err.textContent = 'Min. 3 chars, letters and numbers only.';
+                input.setAttribute('aria-invalid', 'true');
+                input.style.borderColor = '#ef4444';
+            } else {
+                err.textContent = '';
+                input.setAttribute('aria-invalid', 'false');
+                input.style.borderColor = '#22c55e';
+            }
+        }
+
+        usernameInput.addEventListener('input', e => validateUsername(e.target));
+    </script>
+</body>
+
+</html>
