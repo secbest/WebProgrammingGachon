@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 7 Monday - E1 Fix a div-button to a real button</title>
+    <style>
+        body { font-family: system-ui; padding: 24px; max-width: 560px; margin: 0 auto; color: #1a2340; }
+
+        /* The .btn class now styles a real <button>, so the browser gives us
+           keyboard focus, Enter/Space activation and the "button" role for free. */
+        .btn {
+            display: inline-block; background: #1a7f5a; color: white;
+            padding: 10px 24px; border-radius: 8px; cursor: pointer; font-size: 15px;
+            font-weight: 600; border: none; font-family: inherit;
+        }
+
+        /* Visible focus ring for keyboard users (not shown on mouse clicks) */
+        .btn:focus-visible {
+            outline: 3px solid #1a7f5a;
+            outline-offset: 3px;
+        }
+
+        .close-btn {
+            margin-left: 16px; background: #dc2626; color: white;
+            border: none; border-radius: 50%; width: 36px; height: 36px;
+            font-size: 18px; cursor: pointer;
+        }
+
+        .close-btn:focus-visible {
+            outline: 3px solid #dc2626;
+            outline-offset: 3px;
+        }
+
+        #result { margin-top: 16px; font-size: 14px; color: #4a5568; min-height: 1.4em; }
+        .back { display: inline-block; margin-bottom: 16px; color: #1a56db; font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <a class="back" href="../index.html">← Week 9</a>
+    <h1>E1 · div → button</h1>
+    <p>Try pressing <kbd>Tab</kbd> then <kbd>Enter</kbd> (or <kbd>Space</kbd>):</p>
+
+    <!-- ✅ FIXED: the <div class="btn"> is now a real <button> -->
+    <button class="btn" type="button" onclick="alert('Clicked!')">
+        Submit form
+    </button>
+
+    <!-- ✅ FIXED: the icon-only close button now has an accessible name -->
+    <button type="button" class="close-btn" aria-label="Close" onclick="alert('Closed')">
+        ✕
+    </button>
+
+    <div id="result" role="status" aria-live="polite"></div>
+
+    <script>
+        // Log when each button is activated (click or keyboard)
+        document.querySelectorAll('button').forEach(el => {
+            el.addEventListener('click', () => {
+                document.getElementById('result').textContent =
+                    '✅ Activated! (works by keyboard and mouse)';
+            });
+        });
+    </script>
+</body>
+
+</html>

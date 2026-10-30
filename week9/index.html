@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 9 - Web Programming</title>
+  <link rel="stylesheet" href="../assets/index-glass.css">
+  <style>
+    /* status dot + corner planet (static, no endless animation) */
+    .item-link { position: relative; padding-left: 48px; }
+    .item-link::before {
+      content: ""; position: absolute; left: 20px; top: 50%; width: 10px; height: 10px; margin-top: -5px;
+      border-radius: 50%; background: #6ee7ff; box-shadow: 0 0 0 4px rgba(110,231,255,.18);
+    }
+    .container::after {
+      content: ""; position: absolute; top: 22px; right: 26px; width: 20px; height: 20px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #a78bfa); box-shadow: 0 0 14px #a78bfa;
+    }
+    .header { padding-right: 40px; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="header">
+      <h1>Week 9</h1>
+      <a class="back-link" href="../index.html">← Back to Main</a>
+    </div>
+
+    <input id="search" type="search" placeholder="Filter exercises by title" aria-label="Filter links">
+
+    <nav class="section-list" aria-label="Week 9 exercises">
+      <section class="section" aria-labelledby="g-a11y">
+        <h2 id="g-a11y">♿ Week 7 Monday · Web Accessibility (A11y) <span class="count">5</span></h2>
+        <a class="item-link" href="week7_a11y_monday/exercise_E1_div_to_button.html">Exercise 1 - Fix a div-button to a real button</a>
+        <a class="item-link" href="week7_a11y_monday/exercise_E2_alt_text.html">Exercise 2 - Add Proper alt Text to Images</a>
+        <a class="item-link" href="week7_a11y_monday/exercise_E3_before.html">Exercise 3 - Lighthouse: before (score 70)</a>
+        <a class="item-link" href="week7_a11y_monday/exercise_E3_after.html">Exercise 3 - Lighthouse: after fixes (score 100)</a>
+        <a class="item-link" href="week7_a11y_monday/homework_lighthouse_report.html">Homework - Lighthouse audit report (project page 98 → 100)</a>
+      </section>
+    </nav>
+
+    <p id="empty-state">No matching exercises found.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById("search");
+    const links = [...document.querySelectorAll(".item-link")];
+    const emptyState = document.getElementById("empty-state");
+
+    search.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach((link) => {
+        const visible = link.textContent.toLowerCase().includes(query) || link.getAttribute("href").toLowerCase().includes(query);
+        link.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
+</body>
+</html>

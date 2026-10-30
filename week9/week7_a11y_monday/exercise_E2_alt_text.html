@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 7 Monday - E2 Add Proper alt Text to Images</title>
+    <style>
+        body { font-family: system-ui; padding: 24px; max-width: 520px; margin: 0 auto; color: #1a2340; }
+        figure { margin: 0 0 18px; }
+        img { display: block; width: 100%; height: auto; border-radius: 8px; border: 2px dashed #999; }
+        figcaption, .label { font-size: 12px; color: #4a5568; margin-top: 6px; }
+        a img { width: 120px; border: 2px solid #1a2340; }
+        a:focus-visible, button:focus-visible { outline: 3px solid #1a7f5a; outline-offset: 3px; }
+        button {
+            background: #1a7f5a; color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;
+        }
+        #feedback { margin-top: 12px; font-size: 14px; line-height: 1.7; }
+        .back { display: inline-block; margin-bottom: 16px; color: #1a56db; font-size: 14px; }
+    </style>
+</head>
+
+<body>
+    <a class="back" href="../index.html">← Week 9</a>
+    <h1>E2 · alt text</h1>
+
+    <!-- Image 1: informational photo -> describe what it shows -->
+    <figure>
+        <img src="img/campus.svg"
+             alt="Gachon University main building, a modern structure with a row of windows, flanked by trees">
+        <figcaption>Image 1: Campus building photo (informational)</figcaption>
+    </figure>
+
+    <!-- Image 2: decorative -> EMPTY alt (not missing!) so screen readers skip it -->
+    <figure>
+        <img src="img/wave.svg" alt="">
+        <figcaption>Image 2: Decorative wavy divider</figcaption>
+    </figure>
+
+    <!-- Image 3: linked logo -> alt describes where the link goes -->
+    <figure>
+        <a href="../../index.html"><img src="img/logo.svg" alt="Gachon University — go to homepage"></a>
+        <figcaption>Image 3: University logo (inside a link to the homepage)</figcaption>
+    </figure>
+
+    <!-- Image 4: chart -> put the key data in the text equivalent -->
+    <figure>
+        <img src="img/chart.svg"
+             alt="Bar chart showing student enrollment: 2024: 1,200 students; 2025: 1,400 students; 2026: 1,476 students">
+        <figcaption>Image 4: Enrollment chart: 2024: 1,200 | 2025: 1,400 | 2026: 1,476 students</figcaption>
+    </figure>
+
+    <button type="button" onclick="checkAlts()">Check my alt text</button>
+    <div id="feedback" role="status" aria-live="polite"></div>
+
+    <script>
+        const GENERIC = ['image', 'logo', 'chart', 'photo', 'picture', 'click here'];
+
+        function checkAlts() {
+            const imgs = document.querySelectorAll('img');
+            const results = [];
+            imgs.forEach((img, i) => {
+                const alt = img.getAttribute('alt');
+                if (alt === null) results.push(`❌ Image ${i + 1}: missing alt attribute`);
+                else if (GENERIC.includes(alt.trim().toLowerCase()))
+                    results.push(`⚠️ Image ${i + 1}: alt="${alt}" is too generic`);
+                else if (i === 1 && alt !== '')
+                    results.push('⚠️ Image 2 should have alt="" (decorative)');
+                else if (i !== 1 && alt === '')
+                    results.push(`⚠️ Image ${i + 1}: empty alt, but this image carries information`);
+                else results.push(`✅ Image ${i + 1}: alt="${alt}"`);
+            });
+            document.getElementById('feedback').innerHTML = results.join('<br>');
+        }
+    </script>
+</body>
+
+</html>

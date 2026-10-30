@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 7 Homework - Lighthouse Accessibility Audit Report</title>
+    <style>
+        :root { --ink: #1a2340; --muted: #4a5568; --line: #c8d4f0; --bg: #f0f4ff; --card: #fff;
+                --brand: #1a7f5a; --bad: #b42318; --badbg: #fee2e2; --good: #166534; --goodbg: #dcfce7; --acc: #1a56db; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 24px 16px 56px; font-family: system-ui, "Segoe UI", Arial, sans-serif; line-height: 1.6; color: var(--ink); background: var(--bg); }
+        main { max-width: 900px; margin: 0 auto; }
+        a { color: var(--acc); }
+        a:focus-visible, summary:focus-visible { outline: 3px solid var(--acc); outline-offset: 3px; }
+        h1 { margin: 6px 0 4px; font-size: 1.9rem; }
+        h2 { margin: 36px 0 10px; font-size: 1.3rem; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+        h3 { margin: 0 0 6px; font-size: 1.05rem; }
+        .meta { color: var(--muted); margin: 0 0 18px; }
+        .back { display: inline-block; font-size: .9rem; }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 14px 0; }
+
+        .scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 18px 0; }
+        .score { text-align: center; }
+        .score .what { font-weight: 700; }
+        .score .nums { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 8px 0; }
+        .badge { display: inline-grid; place-items: center; width: 74px; height: 74px; border-radius: 50%; font-size: 1.7rem; font-weight: 800; border: 5px solid; }
+        .b-mid { color: #b45309; border-color: #f59e0b; background: #fffbeb; }
+        .b-ok  { color: var(--good); border-color: #22c55e; background: var(--goodbg); }
+        .arrow { font-size: 1.6rem; color: var(--muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: .92rem; background: var(--card); }
+        th, td { text-align: left; padding: 9px 12px; border: 1px solid var(--line); vertical-align: top; }
+        th { background: #e8eefa; }
+        .tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: .75rem; font-weight: 700; }
+        .t-auto { background: var(--badbg); color: var(--bad); }
+        .t-man { background: #fef3c7; color: #92400e; }
+
+        .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 0; }
+        .cmp > div { border-radius: 10px; padding: 10px 12px; }
+        .cmp .b { background: var(--badbg); border: 1px solid #fca5a5; }
+        .cmp .a { background: var(--goodbg); border: 1px solid #86efac; }
+        .cmp strong { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+        pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: 12.5px/1.55 Consolas, "JetBrains Mono", monospace; }
+        code { font-family: Consolas, monospace; font-size: .9em; background: #e8eefa; padding: 1px 5px; border-radius: 4px; }
+
+        figure { margin: 14px 0; }
+        figure img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+        figcaption { margin-top: 6px; font-size: .85rem; color: var(--muted); }
+        .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+
+        .note { border-left: 4px solid var(--brand); background: #d1fae5; padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; }
+        .warn { border-left-color: #d97706; background: #fef3c7; }
+        ol.steps { padding-left: 20px; }
+
+        @media (max-width: 640px) { .cmp { grid-template-columns: 1fr; } }
+        @media print { body { background: #fff; } .back { display: none; } .card, figure, .cmp, table { break-inside: avoid; } }
+    </style>
+</head>
+
+<body>
+    <main>
+        <a class="back" href="../index.html">← Week 9</a>
+        <h1>Lighthouse Accessibility Audit &amp; Fixes</h1>
+        <p class="meta">
+            Jasper Teo Kheng Cher · K0126002 Web Programming · Gachon University · Week 7 Monday homework<br>
+            Page audited: <strong>Team 16 project page</strong> (<a href="../../project/index.html"><code>project/index.html</code></a>, "A Better Website for the Gachon WIND Baseball Club")<br>
+            Tool: Lighthouse 13.6.0 (Accessibility category), Chrome, run against a local web server on 28 Oct 2026.
+        </p>
+
+        <!-- ================= Summary ================= -->
+        <h2>Summary</h2>
+        <div class="scores">
+            <div class="card score">
+                <div class="what">Team project page</div>
+                <div class="nums"><span class="badge b-ok" aria-label="Before: 98">98</span><span class="arrow" aria-hidden="true">→</span><span class="badge b-ok" aria-label="After: 100">100</span></div>
+                <div>1 automated issue fixed + 5 manual-audit fixes</div>
+            </div>
+            <div class="card score">
+                <div class="what">Exercise E3 page (practice)</div>
+                <div class="nums"><span class="badge b-mid" aria-label="Before: 70">70</span><span class="arrow" aria-hidden="true">→</span><span class="badge b-ok" aria-label="After: 100">100</span></div>
+                <div>4 automated issues fixed</div>
+            </div>
+        </div>
+        <div class="note">
+            <strong>Honest note on the starting score.</strong> The project page already scored 98, so Lighthouse itself found only <em>one</em> failing check.
+            To meet the "fix at least 3 issues" goal I also did a manual review (keyboard, structure, screen-reader behaviour) and fixed five more real problems.
+            The E3 practice page is included because it shows a much bigger before/after change (70 → 100).
+        </div>
+
+        <!-- ================= Step 1 ================= -->
+        <h2>Step 1 · Audit before (project page)</h2>
+        <div class="shots">
+            <figure>
+                <img src="evidence/lighthouse-project_before.png" alt="Lighthouse accessibility report for the project page before the fixes: score 98, with one failing item, 'Document does not have a main landmark'.">
+                <figcaption>Before: score <strong>98</strong>. Failing: “Document does not have a main landmark.” (<a href="evidence/lighthouse-project_before.html">full report</a>)</figcaption>
+            </figure>
+        </div>
+
+        <!-- ================= Step 2 ================= -->
+        <h2>Step 2 · Issues identified</h2>
+        <table>
+            <thead><tr><th>#</th><th>Issue</th><th>Found by</th><th>WCAG</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>No <code>&lt;main&gt;</code> landmark, so screen-reader users cannot jump to the main content</td><td><span class="tag t-auto">Lighthouse</span></td><td>1.3.1 / 2.4.1 (landmark-one-main)</td></tr>
+                <tr><td>2</td><td>No “skip to content” link; keyboard users must tab through every top link first</td><td><span class="tag t-man">Manual</span></td><td>2.4.1 Bypass Blocks (A)</td></tr>
+                <tr><td>3</td><td>Decorative emoji in headings and cards, and the initial-letter avatars, are read aloud by screen readers (“construction sign”, “J”…)</td><td><span class="tag t-man">Manual</span></td><td>1.1.1 Non-text Content (A)</td></tr>
+                <tr><td>4</td><td>External link (Instagram) opens a new tab without warning</td><td><span class="tag t-man">Manual</span></td><td>3.2.5 / best practice (G201)</td></tr>
+                <tr><td>5</td><td>Custom focus styling relied on browser defaults, which can be low-contrast on the dark theme</td><td><span class="tag t-man">Manual</span></td><td>2.4.7 Focus Visible (AA)</td></tr>
+                <tr><td>6</td><td>Timeline list with <code>list-style: none</code> can lose its list semantics in some screen readers</td><td><span class="tag t-man">Manual</span></td><td>1.3.1 Info and Relationships (A)</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ================= Step 3 ================= -->
+        <h2>Step 3 · What I changed</h2>
+
+        <div class="card">
+            <h3>Fix 1 · Add a <code>&lt;main&gt;</code> landmark <span class="tag t-auto">Lighthouse</span></h3>
+            <div class="cmp">
+                <div class="b"><strong>Before</strong><pre>&lt;/header&gt;
+
+&lt;section id="problem"&gt;…&lt;/section&gt;
+…
+&lt;section id="media"&gt;…&lt;/section&gt;
+&lt;footer&gt;…&lt;/footer&gt;</pre></div>
+                <div class="a"><strong>After</strong><pre>&lt;/header&gt;
+&lt;main id="main-content" tabindex="-1"&gt;
+  &lt;section id="problem"&gt;…&lt;/section&gt;
+  …
+  &lt;section id="media"&gt;…&lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;…&lt;/footer&gt;</pre></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Fix 2 · Skip-to-content link</h3>
+            <div class="cmp">
+                <div class="b"><strong>Before</strong><pre>&lt;body&gt;
+  &lt;div class="wrap"&gt;
+    (first Tab stop = “← Back to Main”)</pre></div>
+                <div class="a"><strong>After</strong><pre>&lt;body&gt;
+  &lt;a class="skip-link" href="#main-content"&gt;
+    Skip to main content&lt;/a&gt;
+/* hidden off-screen until focused */
+.skip-link { top: -64px; }
+.skip-link:focus { top: 16px; }</pre></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Fix 3 · Hide decorative emoji and avatars from screen readers</h3>
+            <div class="cmp">
+                <div class="b"><strong>Before</strong><pre>&lt;h2&gt;🚧 The problem…&lt;/h2&gt;
+&lt;span class="icon"&gt;🏫&lt;/span&gt;
+&lt;div class="avatar"&gt;J&lt;/div&gt;</pre></div>
+                <div class="a"><strong>After</strong><pre>&lt;h2&gt;&lt;span aria-hidden="true"&gt;🚧&lt;/span&gt; The problem…&lt;/h2&gt;
+&lt;span class="icon" aria-hidden="true"&gt;🏫&lt;/span&gt;
+&lt;div class="avatar" aria-hidden="true"&gt;J&lt;/div&gt;</pre></div>
+            </div>
+            <p>6 heading emoji, 5 card icons and 4 avatars. The real names and headings next to them still carry all the meaning.</p>
+        </div>
+
+        <div class="card">
+            <h3>Fix 4 · Tell users a link opens a new tab</h3>
+            <div class="cmp">
+                <div class="b"><strong>Before</strong><pre>&lt;a href="…" target="_blank" rel="noopener"&gt;
+  @GCU_WIND&lt;/a&gt;</pre></div>
+                <div class="a"><strong>After</strong><pre>&lt;a href="…" target="_blank" rel="noopener"&gt;
+  @GCU_WIND&lt;span class="sr-only"&gt;
+  (opens in a new tab)&lt;/span&gt;&lt;/a&gt;</pre></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Fix 5 · Explicit, high-contrast focus ring</h3>
+            <div class="cmp">
+                <div class="b"><strong>Before</strong><pre>(browser default outline only)</pre></div>
+                <div class="a"><strong>After</strong><pre>a:focus-visible, video:focus-visible,
+.btn:focus-visible, .pill:focus-visible {
+  outline: 3px solid #5eead4;
+  outline-offset: 3px;
+}</pre></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Fix 6 · Keep list semantics on the styled timeline</h3>
+            <div class="cmp">
+                <div class="b"><strong>Before</strong><pre>&lt;ol class="timeline"&gt;</pre></div>
+                <div class="a"><strong>After</strong><pre>&lt;ol class="timeline" role="list"&gt;</pre></div>
+            </div>
+        </div>
+
+        <!-- ================= Step 4 ================= -->
+        <h2>Step 4 · Audit after</h2>
+        <div class="shots">
+            <figure>
+                <img src="evidence/lighthouse-project_after.png" alt="Lighthouse accessibility report for the project page after the fixes: score 100 with no failing items.">
+                <figcaption>After: score <strong>100</strong>, no failing items. (<a href="evidence/lighthouse-project_after.html">full report</a>)</figcaption>
+            </figure>
+        </div>
+
+        <h2>Keyboard test (bonus)</h2>
+        <div class="card">
+            <p>I tested with real <kbd>Tab</kbd> and <kbd>Enter</kbd> key presses in Chrome:</p>
+            <ol class="steps">
+                <li>The <strong>first Tab</strong> stop is now “Skip to main content”, which slides into view with a focus ring.</li>
+                <li><strong>Enter</strong> on it jumps to <code>#main-content</code> and moves keyboard focus into <code>&lt;main&gt;</code>, so the next Tab lands on the first link of the content.</li>
+                <li>Tabbing through the whole page visits <strong>15 stops</strong> (links, buttons, the video player) and every link shows a visible focus ring.</li>
+                <li><strong>No keyboard trap:</strong> after the video controls, focus leaves the page normally.</li>
+            </ol>
+            <figure>
+                <img src="evidence/skip-link-focused.png" alt="The project page after pressing Tab once: a teal 'Skip to main content' button with a focus ring appears in the top-left corner.">
+                <figcaption>First Tab press: the skip link appears at the top-left.</figcaption>
+            </figure>
+        </div>
+
+        <!-- ================= Exercise E3 ================= -->
+        <h2>Extra · Exercise E3 (practice page) before / after</h2>
+        <div class="shots">
+            <figure>
+                <img src="evidence/lighthouse-e3_before.png" alt="Lighthouse report for the E3 practice page before fixes: score 70, with colour contrast, missing title, missing lang and missing main landmark failing.">
+                <figcaption>Before: <strong>70</strong>. <a href="exercise_E3_before.html">Page</a> · <a href="evidence/lighthouse-e3_before.html">full report</a></figcaption>
+            </figure>
+            <figure>
+                <img src="evidence/lighthouse-e3_after.png" alt="Lighthouse report for the E3 practice page after fixes: score 100.">
+                <figcaption>After: <strong>100</strong>. <a href="exercise_E3_after.html">Page</a> · <a href="evidence/lighthouse-e3_after.html">full report</a></figcaption>
+            </figure>
+        </div>
+        <table>
+            <thead><tr><th>Problem on the E3 page</th><th>Fix</th><th>Caught by Lighthouse?</th></tr></thead>
+            <tbody>
+                <tr><td>Red error text <code>#ff0000</code> on white (3.99:1, needs 4.5:1)</td><td>Darker red <code>#b42318</code> plus an “Error:” label</td><td>Yes</td></tr>
+                <tr><td>No <code>&lt;title&gt;</code>, no <code>lang</code>, no <code>&lt;main&gt;</code></td><td>Added all three</td><td>Yes</td></tr>
+                <tr><td>Icon-only button with no label</td><td><code>aria-label="Search"</code></td><td>No</td></tr>
+                <tr><td>Email input with no <code>&lt;label&gt;</code></td><td><code>&lt;label for="email-field"&gt;</code></td><td>No</td></tr>
+                <tr><td>Error shown by colour only</td><td>“⚠️ Error:” text added</td><td>Partly (contrast only)</td></tr>
+                <tr><td>Linked image with alt “click here”</td><td>Alt describes the destination</td><td>No</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Limits of this audit</h2>
+        <div class="note warn">
+            <ul>
+                <li><strong>Automated checks are not enough.</strong> On the E3 page, Lighthouse did not flag the unlabeled icon button, the missing input label or the “click here” alt text. Only a manual review caught them.</li>
+                <li><strong>No screen reader was used.</strong> I tested keyboard behaviour for real, and checked the markup that screen readers rely on, but I did not listen to NVDA or VoiceOver. That would be the next step.</li>
+                <li><strong>Still open:</strong> the project video has no captions. Captions need someone who has watched it, so I have not written any; they are required for WCAG 1.2.2 (Level A).</li>
+            </ul>
+        </div>
+    </main>
+</body>
+
+</html>
