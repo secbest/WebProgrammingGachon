@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework - Git and GitHub (webpro-w9)</title>
+  <link rel="stylesheet" href="hw.css">
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <main id="main-content" tabindex="-1">
+    <a class="back" href="index.html">← Week 10</a>
+    <h1>Week 9 Monday Homework · Git &amp; GitHub</h1>
+    <p class="sub">Jasper Teo Kheng Cher · K0126002 Web Programming · Repository <code>webpro-w9</code></p>
+
+    <div class="card warn">
+      <strong>Status:</strong> the local part is built and tested. Steps marked <span class="who you">you</span> need your GitHub login, so I couldn't do them for you. Nothing has been created on GitHub yet.
+    </div>
+
+    <h2>The 5 steps</h2>
+    <div class="card">
+      <ol class="steps">
+        <li><strong>Create a GitHub account <span class="who you">you</span></strong>
+          Your username appears to be <code>secbest</code> (it is the owner of this course repo), so you already have one. Use a professional username.</li>
+        <li><strong>Create a new Public repository named <code>webpro-w9</code> <span class="who you">you</span></strong>
+          On github.com click <em>New repository</em>, name it exactly <code>webpro-w9</code>, choose <em>Public</em>, and <strong>do not</strong> tick "Add a README".</li>
+        <li><strong>Local folder, <code>git init</code>, <code>index.html</code> with your name and date, commit, push <span class="who me">done locally</span></strong>
+          The page is ready at <a href="webpro-w9/index.html">webpro-w9/index.html</a>. Copy that file into a new folder on your computer and run:
+<pre><code>mkdir webpro-w9 &amp;&amp; cd webpro-w9
+git init -b main
+# copy index.html into this folder, then:
+git add index.html
+git commit -m "Add index.html with student name and date for Week 9 homework"
+git remote add origin https://github.com/secbest/webpro-w9.git
+git push -u origin main</code></pre></li>
+        <li><strong>Enable GitHub Pages <span class="who you">you</span></strong>
+          Repo → <em>Settings → Pages → Deploy from a branch → main → / (root) → Save</em>. Wait about a minute.
+          Your site will be at <code>https://secbest.github.io/webpro-w9/</code>.</li>
+        <li><strong>Submit on the LMS <span class="who you">you</span></strong>
+          Paste both URLs:
+<pre><code>https://github.com/secbest/webpro-w9
+https://secbest.github.io/webpro-w9/</code></pre>
+          Open the Pages URL in a private window first to confirm it loads.</li>
+      </ol>
+    </div>
+
+    <h2>Proof the local part works</h2>
+    <div class="card">
+      <p>I ran these commands in a throwaway folder, using a local bare repository as a stand-in for GitHub. The real output was:</p>
+<pre><code>$ git init -b main
+$ git status -sb
+## No commits yet on main
+?? index.html
+$ git add index.html
+$ git commit -m "Add index.html with student name and date for Week 9 homework"
+[main (root-commit) f7b78e0] Add index.html with student name and date for Week 9 homework
+ 1 file changed, 43 insertions(+)
+$ git push -u origin main
+ * [new branch]      main -> main
+$ git log --oneline
+f7b78e0 Add index.html with student name and date for Week 9 homework</code></pre>
+      <p>The commit hash on your machine will differ. That is normal.</p>
+    </div>
+
+    <h2>What your page contains</h2>
+    <table>
+      <thead><tr><th>Requirement</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>index.html in the repo root</td><td class="pass">Yes, <code>webpro-w9/index.html</code></td></tr>
+        <tr><td>Your name</td><td class="pass">Jasper Teo Kheng Cher</td></tr>
+        <tr><td>Date</td><td class="pass">Wednesday, November 4, 2026</td></tr>
+        <tr><td>Descriptive commit message</td><td class="pass">Says what was added and why</td></tr>
+        <tr><td>Relative paths only (needed for Pages)</td><td class="pass">None needed; the CSS is inline</td></tr>
+      </tbody>
+    </table>
+    <div class="card note">
+      The date on the page is the day I built it. Change it if you submit on a different day.
+    </div>
+  </main>
+</body>
+</html>

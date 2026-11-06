@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercises - GitHub Pages (Week 9 Friday)</title>
+  <link rel="stylesheet" href="hw.css">
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <main id="main-content" tabindex="-1">
+    <a class="back" href="index.html">← Week 10</a>
+    <h1>Week 9 Friday Exercises · GitHub Pages</h1>
+    <p class="sub">Jasper Teo Kheng Cher · K0126002 Web Programming · All three use your <code>webpro-w9</code> repo from the Monday homework</p>
+
+    <div class="card warn">
+      <strong>Status:</strong> I wrote the 404 page and the steps. Enabling Pages and viewing the live site need your GitHub login, so I haven't done those. Do the Monday homework (Part A) first, because it creates the repo these exercises use.
+    </div>
+
+    <h2 id="e1">E1 · Enable GitHub Pages for webpro-w9</h2>
+    <div class="card">
+      <p><strong>Goal:</strong> turn on Pages and confirm the site is live. If you already did this in Monday homework Part A, only verify it.</p>
+      <ol>
+        <li>Open <code>https://github.com/secbest/webpro-w9</code>.</li>
+        <li>Click <strong>Settings</strong>, then <strong>Pages</strong> in the left sidebar.</li>
+        <li>Under "Build and deployment", set Source to <strong>Deploy from a branch</strong>.</li>
+        <li>Branch <strong>main</strong>, folder <strong>/ (root)</strong>, click <strong>Save</strong>.</li>
+        <li>Wait about 60 seconds and refresh the page.</li>
+        <li>Click the live link. Your <code>index.html</code> should appear.</li>
+        <li>Write down your URL:</li>
+      </ol>
+<pre><code>https://secbest.github.io/webpro-w9/</code></pre>
+      <p><strong>Check:</strong> the page shows "Hello, Git &amp; GitHub!" with your name. If you see a 404, wait another minute. The repo must be Public.</p>
+    </div>
+
+    <h2 id="e2">E2 · Find and understand a 404 page</h2>
+    <div class="card">
+      <ol>
+        <li>In a private window, open a page that doesn't exist:
+<pre><code>https://secbest.github.io/webpro-w9/this-does-not-exist.html</code></pre></li>
+        <li>You will see GitHub's generic "404 · File not found" page. Note what it looks like.</li>
+        <li>Is this a good experience? <strong>Answer:</strong> No. It is a plain grey GitHub-branded page. It has nothing from your site, it doesn't explain what went wrong, and it gives no obvious way back to your home page. A visitor may think your whole site is broken.</li>
+        <li>Check your computer: do you have a <code>404.html</code> in your <code>webpro-w9</code> folder? Not yet. E3 adds it.</li>
+      </ol>
+      <p><strong>Key fact:</strong> GitHub Pages serves a file called <code>404.html</code> from the repo root whenever a page is missing. Without that file, it shows its generic page.</p>
+    </div>
+
+    <h2 id="e3">E3 · Create a custom 404 page</h2>
+    <div class="card">
+      <p><strong>Goal:</strong> add a friendly 404 page and deploy it.</p>
+      <p>The page is ready at <a href="webpro-w9/404.html">webpro-w9/404.html</a>. Copy it into your <code>webpro-w9</code> folder, next to <code>index.html</code>, then run:</p>
+<pre><code>cd C:\Users\Jas\Documents\GitHub\webpro-w9
+copy C:\Users\Jas\Documents\GitHub\WebProgrammingGachon\week10\webpro-w9\404.html .
+git add 404.html
+git commit -m "Add custom 404 page"
+git push</code></pre>
+      <p>Wait about 60 seconds, then open the missing URL from E2 again:</p>
+<pre><code>https://secbest.github.io/webpro-w9/nonexistent</code></pre>
+      <p><strong>Check:</strong> you should now see your own "Oops! Page not found" page with a <em>Back to Home</em> button, instead of GitHub's grey page. The button goes to <code>https://secbest.github.io/webpro-w9/</code>.</p>
+      <p><strong>Two choices I made, so you can explain them:</strong></p>
+      <ul>
+        <li>The home link uses the absolute path <code>/webpro-w9/</code>, which breaks the "use relative paths" rule on purpose. A 404 page is shown at whatever missing address was typed, so a relative <code>./</code> would point to the wrong folder for a deep address such as <code>/webpro-w9/a/b</code>.</li>
+        <li>The page has a language, a title, a viewport tag, a heading and a visible keyboard focus outline, in line with last week's accessibility lesson. The study guide's sample had none of these.</li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>

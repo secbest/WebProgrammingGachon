@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercises - Git and GitHub (Week 9 Monday)</title>
+  <link rel="stylesheet" href="hw.css">
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <main id="main-content" tabindex="-1">
+    <a class="back" href="index.html">← Week 10</a>
+    <h1>Week 9 Monday Exercises · Git &amp; GitHub</h1>
+    <p class="sub">Jasper Teo Kheng Cher · K0126002 Web Programming · E1 → E2 → E3 build on each other</p>
+
+    <div class="card warn">
+      <strong>Windows PowerShell differences from the study guide.</strong>
+      The guide uses Mac/Linux commands. In Windows PowerShell 5.1, two things behave differently:
+      <ul>
+        <li><code>&amp;&amp;</code> does not work. Run the two commands on separate lines, or join them with <code>;</code>.</li>
+        <li><code>echo "..." &gt; file</code> saves the file as UTF-16, which Git and browsers handle badly. Use the <code>Set-Content</code> form shown below instead.</li>
+      </ul>
+    </div>
+
+    <h2 id="e1">E1 · Create your first repository</h2>
+    <div class="card">
+      <p><strong>Goal:</strong> initialise a repo, create a file, make a first commit. Work outside your course repo, for example in <code>C:\Users\Jas\Documents\GitHub</code>.</p>
+<pre><code>mkdir my-first-git
+cd my-first-git
+git init -b main
+Set-Content -Path index.html -Value "&lt;h1&gt;Hello Git&lt;/h1&gt;" -Encoding utf8
+git status
+git add index.html
+git commit -m "Initial commit: add index.html"
+git log --oneline</code></pre>
+      <p><strong>What you should see</strong> (real output; your hash will differ):</p>
+<pre><code>$ git status
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+        index.html
+
+$ git commit -m "Initial commit: add index.html"
+[main (root-commit) d8b0f6b] Initial commit: add index.html
+ 1 file changed, 1 insertion(+)
+
+$ git log --oneline
+d8b0f6b Initial commit: add index.html</code></pre>
+      <p><strong>Check:</strong> <code>git status</code> listed <code>index.html</code> as <em>Untracked</em> before <code>git add</code>, and the log shows one commit.</p>
+    </div>
+
+    <h2 id="e2">E2 · Create a branch and merge it</h2>
+    <div class="card">
+      <p><strong>Goal:</strong> see files appear and disappear as you switch branches. Stay in <code>my-first-git</code>.</p>
+<pre><code>git checkout -b feature-style
+Set-Content -Path style.css -Value "body { font-family: sans-serif; }" -Encoding utf8
+git add style.css
+git commit -m "Add basic stylesheet"
+git checkout main
+ls
+git merge feature-style
+ls
+git log --oneline --graph --all</code></pre>
+      <p><strong>What you should see:</strong></p>
+<pre><code>$ git checkout -b feature-style
+Switched to a new branch 'feature-style'
+$ git commit -m "Add basic stylesheet"
+[feature-style 969ee47] Add basic stylesheet
+$ git checkout main
+Switched to branch 'main'
+$ ls                      &lt;- style.css is GONE on main
+index.html
+$ git merge feature-style
+Updating d8b0f6b..969ee47
+Fast-forward
+ style.css | 1 +
+$ ls                      &lt;- and now it is back
+index.html
+style.css
+$ git log --oneline --graph --all
+* 969ee47 Add basic stylesheet
+* d8b0f6b Initial commit: add index.html</code></pre>
+      <p><strong>Why a straight line and "Fast-forward"?</strong> <code>main</code> had no new commits while you worked on the branch, so Git just moved <code>main</code> forward. A fork-and-join graph only appears when both branches change.</p>
+    </div>
+
+    <h2 id="e3">E3 · Push your repo to GitHub</h2>
+    <div class="card">
+      <p><strong>Before you start:</strong> on github.com click <em>New repository</em>, name it <code>git-exercise</code>, choose Public, and leave "Add a README" <strong>unticked</strong>. Then, still in <code>my-first-git</code>:</p>
+<pre><code>git remote add origin https://github.com/secbest/git-exercise.git
+git remote -v
+git push -u origin main</code></pre>
+      <p><strong>What you should see:</strong></p>
+<pre><code>$ git remote -v
+origin  https://github.com/secbest/git-exercise.git (fetch)
+origin  https://github.com/secbest/git-exercise.git (push)
+$ git push -u origin main
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.</code></pre>
+      <p><strong>Check:</strong> open <code>https://github.com/secbest/git-exercise</code>. You should see <code>index.html</code> and <code>style.css</code>, and the commit list should show both commits. Only <code>main</code> was pushed; <code>feature-style</code> stays local, which is fine.</p>
+    </div>
+
+    <div class="card note">
+      <strong>How I tested this.</strong> I ran E1–E3 for real in a temporary folder, using a local bare repository as a stand-in for GitHub. The output above is from that run, apart from the remote URL. I have not created <code>git-exercise</code> on your GitHub account.
+    </div>
+  </main>
+</body>
+</html>

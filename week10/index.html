@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 10 - Web Programming</title>
+  <link rel="stylesheet" href="../assets/index-glass.css">
+  <style>
+    /* status dot + corner planet (static, no endless animation) */
+    .item-link { position: relative; padding-left: 48px; }
+    .item-link::before {
+      content: ""; position: absolute; left: 20px; top: 50%; width: 10px; height: 10px; margin-top: -5px;
+      border-radius: 50%; background: #6ee7ff; box-shadow: 0 0 0 4px rgba(110,231,255,.18);
+    }
+    .container::after {
+      content: ""; position: absolute; top: 22px; right: 26px; width: 20px; height: 20px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #a78bfa); box-shadow: 0 0 14px #a78bfa;
+    }
+    .header { padding-right: 40px; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="header">
+      <h1>Week 10</h1>
+      <a class="back-link" href="../index.html">← Back to Main</a>
+    </div>
+
+    <input id="search" type="search" placeholder="Filter exercises by title" aria-label="Filter links">
+
+    <nav class="section-list" aria-label="Week 10 homework">
+      <section class="section" aria-labelledby="g-sub">
+        <h2 id="g-sub">📮 Submission <span class="count">1</span></h2>
+        <a class="item-link" href="submission.html">All repositories and live links (start here)</a>
+      </section>
+      <section class="section" aria-labelledby="g-mon">
+        <h2 id="g-mon">🌱 Week 9 Monday · Git &amp; GitHub <span class="count">3</span></h2>
+        <a class="item-link" href="exercises_mon_git.html">Exercises 1-3 - First repo, branch &amp; merge, push to GitHub</a>
+        <a class="item-link" href="homework_mon_git_github.html">Homework - webpro-w9 repository (guide + checklist)</a>
+        <a class="item-link" href="webpro-w9/index.html">Homework - webpro-w9 index.html (name and date)</a>
+      </section>
+      <section class="section" aria-labelledby="g-fri">
+        <h2 id="g-fri">🚀 Week 9 Friday · GitHub Pages deployment <span class="count">4</span></h2>
+        <a class="item-link" href="exercises_fri_pages.html">Exercises 1-3 - Enable Pages, 404 page, custom 404</a>
+        <a class="item-link" href="webpro-w9/404.html">Exercise 3 - Custom 404 page (404.html)</a>
+        <a class="item-link" href="homework_fri_pages_deploy.html">Homework - Deploy Book Search App (guide + checklist)</a>
+        <a class="item-link" href="webpro-book-search/index.html">Homework - webpro-book-search (the app to deploy)</a>
+      </section>
+    </nav>
+
+    <p id="empty-state">No matching exercises found.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById("search");
+    const links = [...document.querySelectorAll(".item-link")];
+    const emptyState = document.getElementById("empty-state");
+
+    search.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach((link) => {
+        const visible = link.textContent.toLowerCase().includes(query) || link.getAttribute("href").toLowerCase().includes(query);
+        link.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
+</body>
+</html>

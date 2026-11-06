@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework - Deploy Book Search App</title>
+  <link rel="stylesheet" href="hw.css">
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <main id="main-content" tabindex="-1">
+    <a class="back" href="index.html">← Week 10</a>
+    <h1>Week 9 Friday Homework · Deploy the Book Search App</h1>
+    <p class="sub">Jasper Teo Kheng Cher · K0126002 Web Programming · Repository <code>webpro-book-search</code></p>
+
+    <div class="card warn">
+      <strong>Status:</strong> the app is packaged and checked against the deployment checklist. Creating the repo, enabling Pages and submitting need your GitHub login, so those steps are yours. Nothing is live yet.
+    </div>
+
+    <h2>The 6 steps</h2>
+    <div class="card">
+      <ol class="steps">
+        <li><strong>Get your Book Search App <span class="who me">done</span></strong>
+          The app is the Week 7 lab. A copy named <code>index.html</code> is at <a href="webpro-book-search/index.html">webpro-book-search/index.html</a>. It is one self-contained file.</li>
+        <li><strong>Run the deployment checklist <span class="who me">done</span></strong>
+          Results are in the table below.</li>
+        <li><strong>Create a Public repo named <code>webpro-book-search</code> <span class="who you">you</span></strong>
+          On github.com choose <em>New repository</em>, name it exactly <code>webpro-book-search</code>, set <em>Public</em>, and leave "Add a README" unticked.</li>
+        <li><strong>Push the app <span class="who you">you</span></strong>
+<pre><code>mkdir webpro-book-search &amp;&amp; cd webpro-book-search
+git init -b main
+# copy index.html into this folder, then:
+git add .
+git commit -m "Deploy Book Search App"
+git remote add origin https://github.com/secbest/webpro-book-search.git
+git push -u origin main</code></pre></li>
+        <li><strong>Enable GitHub Pages <span class="who you">you</span></strong>
+          Repo → <em>Settings → Pages → Deploy from a branch → main → / (root) → Save</em>. Wait about a minute, then test
+          <code>https://secbest.github.io/webpro-book-search/</code> in a private window.</li>
+        <li><strong>Submit the live URL on the LMS <span class="who you">you</span></strong>
+          Paste <code>https://secbest.github.io/webpro-book-search/</code>.</li>
+      </ol>
+    </div>
+
+    <h2>Deployment checklist results</h2>
+    <table>
+      <thead><tr><th>Check</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td><code>index.html</code> is in the repo root</td><td class="pass">Yes. The file is named <code>index.html</code> at the top level.</td></tr>
+        <tr><td>All file paths are relative</td><td class="pass">The app uses no local CSS, JS or image files. Everything is inline.</td></tr>
+        <tr><td>No absolute <code>/</code> paths that break on a project site</td><td class="pass">None found. The only URLs are full <code>https://</code> addresses.</td></tr>
+        <tr><td>Filenames are lowercase</td><td class="pass">Only one file, <code>index.html</code>.</td></tr>
+        <tr><td>No API keys or secrets</td><td class="pass">Open Library needs no key.</td></tr>
+        <tr><td>No debug <code>console.log</code></td><td class="pass">None. One <code>console.error</code> remains on purpose, to report a failed API retry.</td></tr>
+        <tr><td>Works on a static host</td><td class="pass">It only calls <code>fetch()</code> to the Open Library API from the browser.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Proof the git part works</h2>
+    <div class="card">
+      <p>I ran these commands in a throwaway folder with a local bare repository as the stand-in for GitHub:</p>
+<pre><code>$ git add .
+$ git commit -m "Deploy Book Search App"
+[main (root-commit) 179b797] Deploy Book Search App
+ 1 file changed, 398 insertions(+)
+$ git push -u origin main
+ * [new branch]      main -> main
+$ git log --oneline
+179b797 Deploy Book Search App</code></pre>
+    </div>
+
+    <div class="card note">
+      <strong>Heads up:</strong> the Open Library API has had outages. If the live site shows an error, press "Try again" in the app. The app retries and caches results, so this is the service, not your deployment.
+    </div>
+  </main>
+</body>
+</html>
