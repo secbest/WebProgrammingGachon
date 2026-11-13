@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Performance Practice Page (AFTER)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+  <style>
+    body { font-family: system-ui; padding: 24px; max-width: 600px; margin: auto; color: #1a2340; }
+    img { width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
+    h2 { color: #b34700; }
+    .skip { position: absolute; left: 16px; top: -64px; padding: 10px 18px; border-radius: 10px; font-weight: 700; color: #fff; background: #1a56db; text-decoration: none; }
+    .skip:focus { top: 16px; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <main id="main-content" tabindex="-1">
+    <h1>Performance Test Page</h1>
+    <p>Same page after the fixes: defer on the script, width/height on every image, lazy loading below the fold.</p>
+    <img src="https://picsum.photos/id/1015/1200/800.webp" alt="River winding through a green valley" width="1200" height="800" fetchpriority="high">
+    <img src="https://picsum.photos/id/1016/1200/800.webp" alt="Canyon walls under a cloudy sky" width="1200" height="800" loading="lazy">
+    <img src="https://picsum.photos/id/1018/1200/800.webp" alt="Mountains rising behind a grassy field" width="1200" height="800" loading="lazy">
+    <h2>Notes</h2>
+    <p>The first image is above the fold, so it is NOT lazy-loaded and gets fetchpriority high instead.</p>
+  </main>
+</body>
+</html>

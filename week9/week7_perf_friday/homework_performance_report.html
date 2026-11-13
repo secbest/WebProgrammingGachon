@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 7 Friday Homework - Web Performance Report</title>
+  <style>
+    :root { --ink: #1a2340; --muted: #4a5568; --line: #c8d4f0; --bg: #f0f4ff; --card: #fff; --acc: #1a56db; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px 16px 56px; font-family: system-ui, "Segoe UI", Arial, sans-serif; line-height: 1.6; color: var(--ink); background: var(--bg); }
+    main { max-width: 900px; margin: 0 auto; }
+    main:focus { outline: none; }
+    a { color: var(--acc); }
+    a:focus-visible { outline: 3px solid var(--acc); outline-offset: 3px; }
+    h1 { margin: 6px 0 4px; font-size: 1.9rem; }
+    h2 { margin: 32px 0 10px; font-size: 1.3rem; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+    .meta { color: var(--muted); margin: 0 0 18px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 14px 0; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { text-align: left; padding: 9px 12px; border: 1px solid var(--line); vertical-align: top; }
+    th { background: #e8eefa; }
+    pre { margin: 8px 0 0; white-space: pre-wrap; word-break: break-word; font: 12.5px/1.55 Consolas, monospace; background: #f6f8ff; padding: 10px 12px; border-radius: 8px; }
+    code { font-family: Consolas, monospace; font-size: .9em; background: #e8eefa; padding: 1px 5px; border-radius: 4px; }
+    .note { border-left: 4px solid #1a7f5a; background: #d1fae5; padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; }
+    .skip { position: absolute; left: 16px; top: -64px; z-index: 10; padding: 10px 18px; border-radius: 10px; font-weight: 700; text-decoration: none; color: #fff; background: #1a56db; }
+    .skip:focus { top: 16px; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to main content</a>
+  <main id="main-content" tabindex="-1">
+    <a href="../index.html">← Week 9</a>
+    <h1>Web Performance Optimization · Report</h1>
+    <p class="meta">
+      Jasper Teo Kheng Cher · K0126002 Web Programming · Gachon University · Week 7 Friday (Week 9 session 2)<br>
+      Tool: Lighthouse 13.6.0, Performance category only, headless Chrome, three runs per page; the median is quoted.
+    </p>
+
+    <h2>Step 1 · Team project page</h2>
+    <div class="card">
+      <p>Page: <a href="../../project/index.html"><code>project/index.html</code></a> (Team 16, Gachon WIND baseball club).</p>
+      <table>
+        <thead><tr><th>Run</th><th>Score</th><th>FCP</th><th>LCP</th><th>CLS</th><th>TBT</th><th>Speed Index</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>99</td><td>1.3 s</td><td>1.3 s</td><td>0</td><td>0 ms</td><td>2.8 s</td></tr>
+          <tr><td>2</td><td>100</td><td>1.2 s</td><td>1.2 s</td><td>0</td><td>20 ms</td><td>2.5 s</td></tr>
+          <tr><td>3</td><td>100</td><td>1.2 s</td><td>1.2 s</td><td>0</td><td>0 ms</td><td>2.7 s</td></tr>
+        </tbody>
+      </table>
+      <p>The score is already above the target (80+, bonus 90+). The page has no Lighthouse "Opportunities" left to fix, so the brief's "if already fast, explain what was done right" applies.</p>
+    </div>
+
+    <h2>What the project page already does right</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Technique</th><th>How the project page uses it</th></tr></thead>
+        <tbody>
+          <tr><td>One request, 17 KB</td><td>All CSS and JS are inline in a single HTML file. Lighthouse counts one real network request (plus the favicon), 17 KiB in total.</td></tr>
+          <tr><td>No render-blocking scripts</td><td>There are no external <code>&lt;script&gt;</code> tags to block parsing, so <code>defer</code> is not needed.</td></tr>
+          <tr><td>No heavy images, no layout shift</td><td>Icons are tiny inline <code>data:</code> SVGs (0 network bytes). Nothing loads late, so CLS is 0.</td></tr>
+          <tr><td>No third-party libraries</td><td>No CDN dependencies, so no extra DNS/TLS round trips. Total Blocking Time is 0 to 20 ms.</td></tr>
+          <tr><td>System font stack</td><td>No web-font download, so text shows immediately (FCP about 1.2 s on Lighthouse's throttled mobile profile).</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><strong>One thing outside the page:</strong> the repository also holds a 74 MB <code>.mp4</code> in <code>project/</code>. The page does not reference it, so visitors never download it and the score is unaffected. If it were embedded it would need <code>preload="none"</code> or a poster image.</div>
+    </div>
+
+    <h2>Steps 2-4 · Five optimizations, measured on the practice page</h2>
+    <p>Because the project page has nothing left to fix, I measured the five changes on the E1 practice page instead (<a href="exercise_E1_before.html">before</a> / <a href="exercise_E1_after.html">after</a>), which has the problems the lesson describes.</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>Page</th><th>Score (median)</th><th>FCP</th><th>LCP</th><th>CLS</th><th>Speed Index</th></tr></thead>
+        <tbody>
+          <tr><td>Before</td><td>75 (runs: 68, 84, 75)</td><td>1.7 s</td><td>4.3 s</td><td>0.18</td><td>1.7 s</td></tr>
+          <tr><td>After</td><td>85 (runs: 85, 85, 84)</td><td>0.7 s</td><td>4.4 s</td><td>0</td><td>1.0 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>The five changes</h3>
+      <ol>
+        <li><strong>defer on the jQuery script</strong> so it no longer blocks HTML parsing.
+<pre>&lt;script src=".../jquery.min.js" defer&gt;&lt;/script&gt;</pre></li>
+        <li><strong>width and height on every image</strong> so the browser reserves space.
+<pre>&lt;img src="..." alt="..." width="1200" height="800"&gt;</pre></li>
+        <li><strong>loading="lazy" on the below-the-fold images</strong> (images 2 and 3 only).
+<pre>&lt;img src="..." alt="..." width="1200" height="800" loading="lazy"&gt;</pre></li>
+        <li><strong>fetchpriority="high" on the hero image</strong>, which is deliberately not lazy-loaded.
+<pre>&lt;img src="..." alt="..." width="1200" height="800" fetchpriority="high"&gt;</pre></li>
+        <li><strong>WebP with a JPEG fallback</strong> via <code>&lt;picture&gt;</code> (<a href="exercise_E2_picture_webp.html">E2</a>). The practice page already requests <code>.webp</code> images.
+<pre>&lt;picture&gt;&lt;source type="image/webp" srcset="hero.webp"&gt;&lt;img src="hero.jpg" alt="..."&gt;&lt;/picture&gt;</pre></li>
+      </ol>
+    </div>
+
+    <h2>Reflection</h2>
+    <div class="card">
+      <p><strong>Biggest impact: image width/height (change 2).</strong> CLS fell from 0.18 to 0, and anything above 0.1 is "needs improvement". Without sizes the page jumped as each photo arrived; with them the space is reserved. <strong>defer (change 1)</strong> came second: FCP dropped from 1.7 s to 0.7 s because parsing no longer waits for jQuery.</p>
+      <p><strong>What did not improve:</strong> LCP stayed near 4.4 s. The hero image is the largest element and is still a 150 KB download from an external server, so lazy loading and WebP cannot help it; only a smaller or closer image would. Total bytes also stayed near 430 KiB, because Lighthouse's tall viewport loads the lazy images too. In my E2 test the WebP was 15% smaller for one photo (150 KB vs 177 KB) and no smaller for another (87 KB vs 85 KB), so WebP is not a guaranteed saving on every image. Scores varied by up to 16 points between runs of the same page, which is why I took the median of three.</p>
+    </div>
+
+    <h2>Exercises</h2>
+    <div class="card">
+      <ul>
+        <li><a href="exercise_E1_before.html">E1 · Lighthouse, before</a> and <a href="exercise_E1_after.html">after</a></li>
+        <li><a href="exercise_E2_picture_webp.html">E2 · picture, WebP and srcset</a></li>
+        <li><a href="exercise_E3_defer.html">E3 · defer and async</a></li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>
