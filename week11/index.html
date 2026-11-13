@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 11 - Web Programming</title>
+  <link rel="stylesheet" href="../assets/index-glass.css">
+  <style>
+    /* status dot + corner planet (static, no endless animation) */
+    .item-link { position: relative; padding-left: 48px; }
+    .item-link::before {
+      content: ""; position: absolute; left: 20px; top: 50%; width: 10px; height: 10px; margin-top: -5px;
+      border-radius: 50%; background: #6ee7ff; box-shadow: 0 0 0 4px rgba(110,231,255,.18);
+    }
+    .container::after {
+      content: ""; position: absolute; top: 22px; right: 26px; width: 20px; height: 20px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #a78bfa); box-shadow: 0 0 14px #a78bfa;
+    }
+    .header { padding-right: 40px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="header">
+      <h1>Week 11</h1>
+      <a class="back-link" href="../index.html">← Back to Main</a>
+    </div>
+
+    <input id="search" type="search" placeholder="Filter exercises by title" aria-label="Filter links">
+
+    <nav class="section-list" aria-label="Week 11 React work">
+      <section class="section" aria-labelledby="g-hw">
+        <h2 id="g-hw">🖼️ Homework · Portfolio Gallery <span class="count">2</span></h2>
+        <a class="item-link" href="https://secbest.github.io/portfolio-gallery/" target="_blank" rel="noopener">Live demo - Portfolio Gallery (ProjectCard, ProjectList, FilterBar)<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="item-link" href="https://github.com/secbest/portfolio-gallery" target="_blank" rel="noopener">GitHub repository - portfolio-gallery<span class="sr-only"> (opens in a new tab)</span></a>
+      </section>
+      <section class="section" aria-labelledby="g-task">
+        <h2 id="g-task">⚛️ Friday · Task 11-A React Components &amp; Props <span class="count">2</span></h2>
+        <a class="item-link" href="https://secbest.github.io/task11/" target="_blank" rel="noopener">Live demo - StudentProfileCard directory (3 cards)<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="item-link" href="https://github.com/secbest/task11" target="_blank" rel="noopener">GitHub repository - task11<span class="sr-only"> (opens in a new tab)</span></a>
+      </section>
+      <section class="section" aria-labelledby="g-ex">
+        <h2 id="g-ex">🧩 Friday · Practice Exercises 1-3 <span class="count">1</span></h2>
+        <a class="item-link" href="https://github.com/secbest/WebProgrammingGachon/tree/main/week11/exercises/src" target="_blank" rel="noopener">Source code - ProfileCard, NotificationList, Card (props, lists, children)<span class="sr-only"> (opens in a new tab)</span></a>
+      </section>
+    </nav>
+
+    <p id="empty-state">No matching exercises found.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById("search");
+    const links = [...document.querySelectorAll(".item-link")];
+    const emptyState = document.getElementById("empty-state");
+
+    search.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach((link) => {
+        const visible = link.textContent.toLowerCase().includes(query) || link.getAttribute("href").toLowerCase().includes(query);
+        link.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
+</body>
+</html>
