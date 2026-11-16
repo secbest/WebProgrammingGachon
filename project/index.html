@@ -29,7 +29,7 @@
       background:
         radial-gradient(circle at 10% 6%, rgba(99, 102, 241, .35), transparent 42%),
         radial-gradient(circle at 92% 40%, rgba(20, 184, 166, .22), transparent 45%),
-        linear-gradient(160deg, #0f1226, #181c3a 60%, #121631) fixed;
+        linear-gradient(160deg, #0f1226, #181c3a 60%, #121631);
     }
 
     .wrap { max-width: 980px; margin: 0 auto; }
@@ -48,7 +48,7 @@
       padding: 40px 32px; border-radius: 28px; text-align: center;
       background: var(--pane); border: 1px solid var(--line);
       box-shadow: 0 8px 32px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255, 255, 255, .2);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      /* no backdrop-filter: blurring the page behind the hero cost ~1s of main-thread time in Lighthouse */
       animation: rise .5s ease both;
     }
     .eyebrow { margin: 0 0 8px; font-size: .8rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--acc-2); }
