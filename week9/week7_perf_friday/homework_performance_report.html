@@ -22,6 +22,11 @@
     pre { margin: 8px 0 0; white-space: pre-wrap; word-break: break-word; font: 12.5px/1.55 Consolas, monospace; background: #f6f8ff; padding: 10px 12px; border-radius: 8px; }
     code { font-family: Consolas, monospace; font-size: .9em; background: #e8eefa; padding: 1px 5px; border-radius: 4px; }
     .note { border-left: 4px solid #1a7f5a; background: #d1fae5; padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; }
+    .warn { border-left-color: #d97706; background: #fef3c7; }
+    figure { margin: 14px 0; }
+    figure img { display: block; width: 100%; max-width: 520px; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+    figcaption { margin-top: 6px; font-size: .85rem; color: var(--muted); }
+    .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
     .skip { position: absolute; left: 16px; top: -64px; z-index: 10; padding: 10px 18px; border-radius: 10px; font-weight: 700; text-decoration: none; color: #fff; background: #1a56db; }
     .skip:focus { top: 16px; }
   </style>
@@ -33,51 +38,82 @@
     <h1>Web Performance Optimization · Report</h1>
     <p class="meta">
       Jasper Teo Kheng Cher · K0126002 Web Programming · Gachon University · Week 7 Friday (Week 9 session 2)<br>
-      Tool: Lighthouse 13.6.0, Performance category only, headless Chrome, three runs per page; the median is quoted.
+      Tool: Lighthouse 13.6.0, Performance category only, headless Chrome, run on 16 Nov 2026 against the <strong>deployed</strong> GitHub Pages URLs (the address is visible at the top of every screenshot). Several runs per page; the median is quoted and the screenshot is the median run.
     </p>
 
-    <h2>Step 1 · Team project page</h2>
+    <h2>Step 1 · Audit the team project page (before)</h2>
     <div class="card">
-      <p>Page: <a href="../../project/index.html"><code>project/index.html</code></a> (Team 16, Gachon WIND baseball club).</p>
-      <table>
-        <thead><tr><th>Run</th><th>Score</th><th>FCP</th><th>LCP</th><th>CLS</th><th>TBT</th><th>Speed Index</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td>99</td><td>1.3 s</td><td>1.3 s</td><td>0</td><td>0 ms</td><td>2.8 s</td></tr>
-          <tr><td>2</td><td>100</td><td>1.2 s</td><td>1.2 s</td><td>0</td><td>20 ms</td><td>2.5 s</td></tr>
-          <tr><td>3</td><td>100</td><td>1.2 s</td><td>1.2 s</td><td>0</td><td>0 ms</td><td>2.7 s</td></tr>
-        </tbody>
-      </table>
-      <p>The score is already above the target (80+, bonus 90+). The page has no Lighthouse "Opportunities" left to fix, so the brief's "if already fast, explain what was done right" applies.</p>
+      <p>Page: <a href="https://secbest.github.io/WebProgrammingGachon/project/index.html"><code>secbest.github.io/WebProgrammingGachon/project/</code></a> (Team 16, Gachon WIND baseball club). A public copy of the page as it was before my changes is kept at <a href="evidence/project_before_optimization.html"><code>evidence/project_before_optimization.html</code></a> so the "before" audit also has a real URL.</p>
+      <div class="shots">
+        <figure>
+          <img src="evidence/lighthouse-project_before.png" alt="Lighthouse performance report for the project page before optimization, address bar showing the secbest.github.io URL: score 95, first and largest contentful paint 0.9 seconds, total blocking time 270 milliseconds.">
+          <figcaption>Before: score <strong>95</strong> (5 runs: 100, 95, 95, 94, 100). <a href="evidence/lighthouse-project_before.html">full report</a></figcaption>
+        </figure>
+      </div>
+      <p>The page is a single 17 KB HTML file with inline CSS, no external scripts and no images (icons are inline SVG), so it was already close to the top of the scale. The only real cost was <strong>Total Blocking Time</strong>: 270 ms in the median run and up to about 1.1 s in slow runs, caused by rendering work on the main thread.</p>
     </div>
 
-    <h2>What the project page already does right</h2>
+    <h2>Step 2 · Biggest issues found</h2>
     <div class="card">
       <table>
-        <thead><tr><th>Technique</th><th>How the project page uses it</th></tr></thead>
+        <thead><tr><th>#</th><th>Issue</th><th>Evidence</th></tr></thead>
         <tbody>
-          <tr><td>One request, 17 KB</td><td>All CSS and JS are inline in a single HTML file. Lighthouse counts one real network request (plus the favicon), 17 KiB in total.</td></tr>
-          <tr><td>No render-blocking scripts</td><td>There are no external <code>&lt;script&gt;</code> tags to block parsing, so <code>defer</code> is not needed.</td></tr>
-          <tr><td>No heavy images, no layout shift</td><td>Icons are tiny inline <code>data:</code> SVGs (0 network bytes). Nothing loads late, so CLS is 0.</td></tr>
-          <tr><td>No third-party libraries</td><td>No CDN dependencies, so no extra DNS/TLS round trips. Total Blocking Time is 0 to 20 ms.</td></tr>
-          <tr><td>System font stack</td><td>No web-font download, so text shows immediately (FCP about 1.2 s on Lighthouse's throttled mobile profile).</td></tr>
-        </tbody>
-      </table>
-      <div class="note"><strong>One thing outside the page:</strong> the repository also holds a 74 MB <code>.mp4</code> in <code>project/</code>. The page does not reference it, so visitors never download it and the score is unaffected. If it were embedded it would need <code>preload="none"</code> or a poster image.</div>
-    </div>
-
-    <h2>Steps 2-4 · Five optimizations, measured on the practice page</h2>
-    <p>Because the project page has nothing left to fix, I measured the five changes on the E1 practice page instead (<a href="exercise_E1_before.html">before</a> / <a href="exercise_E1_after.html">after</a>), which has the problems the lesson describes.</p>
-    <div class="card">
-      <table>
-        <thead><tr><th>Page</th><th>Score (median)</th><th>FCP</th><th>LCP</th><th>CLS</th><th>Speed Index</th></tr></thead>
-        <tbody>
-          <tr><td>Before</td><td>75 (runs: 68, 84, 75)</td><td>1.7 s</td><td>4.3 s</td><td>0.18</td><td>1.7 s</td></tr>
-          <tr><td>After</td><td>85 (runs: 85, 85, 84)</td><td>0.7 s</td><td>4.4 s</td><td>0</td><td>1.0 s</td></tr>
+          <tr><td>1</td><td><code>background: ... fixed</code> on <code>&lt;body&gt;</code>. A fixed background has to be repainted when the page scrolls or changes.</td><td>Style &amp; Layout and "Other" main-thread time of about 1.7 s each in slow runs.</td></tr>
+          <tr><td>2</td><td><code>backdrop-filter: blur(12px)</code> on the hero card. The browser must blur whatever is behind the card.</td><td>Same main-thread cost; the card is translucent over the gradient, so the blur is barely visible.</td></tr>
         </tbody>
       </table>
     </div>
 
+    <h2>Step 3 · Changes made to the project page</h2>
     <div class="card">
+      <ol>
+        <li><strong>Removed <code>fixed</code> from the body background gradient.</strong>
+<pre>- linear-gradient(160deg, #0f1226, #181c3a 60%, #121631) fixed;
++ linear-gradient(160deg, #0f1226, #181c3a 60%, #121631);</pre></li>
+        <li><strong>Removed the <code>backdrop-filter</code> blur from the hero card.</strong>
+<pre>- backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);</pre></li>
+      </ol>
+      <p>The page looks almost identical: the gradient now scrolls with the page, and the hero card is a flat translucent panel.</p>
+    </div>
+
+    <h2>Step 4 · Audit after</h2>
+    <div class="card">
+      <div class="shots">
+        <figure>
+          <img src="evidence/lighthouse-project_after.png" alt="Lighthouse performance report for the project page after optimization, address bar showing the secbest.github.io URL: score 100, first and largest contentful paint 1.2 seconds, total blocking time 0 milliseconds.">
+          <figcaption>After: score <strong>100</strong> (5 runs: 100, 100, 100, 93, 94). <a href="evidence/lighthouse-project_after.html">full report</a></figcaption>
+        </figure>
+      </div>
+      <table>
+        <thead><tr><th>Project page</th><th>Score (median)</th><th>FCP</th><th>LCP</th><th>CLS</th><th>TBT</th><th>Speed Index</th></tr></thead>
+        <tbody>
+          <tr><td>Before</td><td>95</td><td>0.9 s</td><td>0.9 s</td><td>0</td><td>270 ms</td><td>1.8 s</td></tr>
+          <tr><td>After</td><td>100</td><td>1.2 s</td><td>1.2 s</td><td>0</td><td>0 ms</td><td>1.6 s</td></tr>
+        </tbody>
+      </table>
+      <div class="note warn"><strong>Honest caveat:</strong> these scores move around from run to run on my computer (the same page ranged from 73 to 100 in different batches of runs, depending on how busy the machine was). The "after" runs were higher and Total Blocking Time dropped from 270 ms to 0 ms in the median, but a difference of 5 points is within that noise. The project page was already above the 80 target before I changed it.</div>
+    </div>
+
+    <h2>The practice page: five optimizations (E1)</h2>
+    <p>The project page has no images or scripts to optimize, so I measured the lesson's five optimizations on the E1 practice page: <a href="exercise_E1_before.html">before</a> and <a href="exercise_E1_after.html">after</a>.</p>
+    <div class="card">
+      <div class="shots">
+        <figure>
+          <img src="evidence/lighthouse-e1_before.png" alt="Lighthouse performance report for the E1 practice page before optimization, address bar showing the secbest.github.io URL: score 79.">
+          <figcaption>E1 before: score <strong>79</strong> (3 runs: 82, 67, 79). <a href="evidence/lighthouse-e1_before.html">full report</a></figcaption>
+        </figure>
+        <figure>
+          <img src="evidence/lighthouse-e1_after.png" alt="Lighthouse performance report for the E1 practice page after optimization, address bar showing the secbest.github.io URL: score 83, layout shift 0.">
+          <figcaption>E1 after: score <strong>83</strong> (3 runs: 84, 82, 83). <a href="evidence/lighthouse-e1_after.html">full report</a></figcaption>
+        </figure>
+      </div>
+      <table>
+        <thead><tr><th>E1 page</th><th>Score (median)</th><th>FCP</th><th>LCP</th><th>CLS</th><th>Speed Index</th></tr></thead>
+        <tbody>
+          <tr><td>Before</td><td>79 (runs: 82, 67, 79)</td><td>1.8 s</td><td>4.5 s</td><td>0.12 (up to 0.29)</td><td>1.8 s</td></tr>
+          <tr><td>After</td><td>83 (runs: 84, 82, 83)</td><td>1.0 s</td><td>4.7 s</td><td>0</td><td>1.2 s</td></tr>
+        </tbody>
+      </table>
       <h3>The five changes</h3>
       <ol>
         <li><strong>defer on the jQuery script</strong> so it no longer blocks HTML parsing.
@@ -95,8 +131,9 @@
 
     <h2>Reflection</h2>
     <div class="card">
-      <p><strong>Biggest impact: image width/height (change 2).</strong> CLS fell from 0.18 to 0, and anything above 0.1 is "needs improvement". Without sizes the page jumped as each photo arrived; with them the space is reserved. <strong>defer (change 1)</strong> came second: FCP dropped from 1.7 s to 0.7 s because parsing no longer waits for jQuery.</p>
-      <p><strong>What did not improve:</strong> LCP stayed near 4.4 s. The hero image is the largest element and is still a 150 KB download from an external server, so lazy loading and WebP cannot help it; only a smaller or closer image would. Total bytes also stayed near 430 KiB, because Lighthouse's tall viewport loads the lazy images too. In my E2 test the WebP was 15% smaller for one photo (150 KB vs 177 KB) and no smaller for another (87 KB vs 85 KB), so WebP is not a guaranteed saving on every image. Scores varied by up to 16 points between runs of the same page, which is why I took the median of three.</p>
+      <p><strong>Biggest impact: image width/height.</strong> It is the one change that showed up in every run: Cumulative Layout Shift went from 0.12 (and 0.29 in the worst run) to exactly 0, because the browser reserves the space before each photo arrives. <strong>defer</strong> was second: First Contentful Paint dropped from about 1.8 s to 1.0 s in the median runs, although FCP also varied between 0.9 s and 2.0 s from run to run on the same page.</p>
+      <p><strong>What did not improve:</strong> LCP stayed near 4.6 s. The hero photo is the largest element and is still a 150 KB download from an external server, so lazy loading and WebP cannot help it; only a smaller or closer image would. In my E2 test, WebP was 15% smaller for one photo and no smaller for another, so it is not a guaranteed saving. The score gain on this page was small (79 to 83) because the page is tiny and the external image dominates.</p>
+      <p><strong>On the project page,</strong> the lesson I take away is that effects like a fixed background and a blur filter cost main-thread time even on a page with almost no content, and that a single Lighthouse run is not enough evidence: I needed several runs per page to say anything honest.</p>
     </div>
 
     <h2>Exercises</h2>
