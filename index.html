@@ -83,6 +83,8 @@
       opacity: 0; animation: pop .45s ease forwards;
       transition: transform .2s, box-shadow .2s;
     }
+    .week-link-small { font-size: .95rem; padding-left: 10px; padding-right: 10px; }
+    .week-link-wide { grid-column: 1 / -1; }
     .week-link:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(236,72,153,.3), inset 0 1px 0 rgba(255,255,255,.6); }
     @keyframes pop { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
     #empty-state { margin-top: 14px; color: var(--muted); display: none; text-align: center; }
@@ -109,6 +111,7 @@
         <p class="profile-meta">Web Programming (K0126002) · Gachon University · 2026 Fall<br>Instructor: Dr. Toshpulatov</p>
         <span class="tag">Web Programming</span>
         <a class="tag" href="https://secbest.github.io/portfolio/">My portfolio →</a>
+        <a class="tag" href="https://jasper-teo-portfolio.vercel.app/">My new portfolio →</a>
       </div>
     </section>
     <p class="sub">Select a week to view exercises and topic pages.</p>
@@ -125,7 +128,8 @@
       <a class="week-link" href="week10/index.html" data-week="Week 10">Week 10</a>
       <a class="week-link" href="week11/index.html" data-week="Week 11">Week 11</a>
       <a class="week-link" href="project/index.html" data-week="Project">🏟️ Project</a>
-      <a class="week-link" href="https://secbest.github.io/portfolio/" data-week="Portfolio">🧑‍💻 Portfolio</a>
+      <a class="week-link week-link-small" href="https://secbest.github.io/portfolio/" data-week="School Portfolio">🧑‍💻 School Portfolio</a>
+      <a class="week-link week-link-wide" href="https://jasper-teo-portfolio.vercel.app/" data-week="New Portfolio">✨ My new and updated personal portfolio website<br><small style="font-weight:500;color:var(--muted)">Built with React and deployed in Vercel</small></a>
     </nav>
     <p id="empty-state">No matching week found.</p>
   </main>
