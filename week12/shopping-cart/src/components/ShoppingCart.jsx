@@ -28,11 +28,11 @@ export default function ShoppingCart() {
   return (
     <section aria-label="Shopping cart">
       <p className="muted">
-        Week 11 React State homework: product list, add / remove, cart sidebar with a total computed from state, and
+        Week 12 React State homework: product list, add / remove, cart sidebar with a total computed from state, and
         quantity controls. Demo items only, nothing is sold.
       </p>
       <div className="shop-layout">
-        <ProductList products={products} cart={cart} onAdd={addToCart} onRemove={removeFromCart} />
+        <ProductList products={products} cart={cart} onAdd={addToCart} onRemove={removeFromCart} onChangeQty={changeQty} />
         <CartPanel
           products={products}
           cart={cart}

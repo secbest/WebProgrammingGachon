@@ -1,6 +1,6 @@
 # Interactive Shopping Cart
 
-Week 11 React State homework (K0126002 Web Programming), kept in the Week 12 folder.
+Week 12 React State homework (K0126002 Web Programming), kept in the Week 12 folder.
 
 1. Product list: 5 items with name, price and image URL (`src/components/products.js`)
 2. Add / Remove buttons: cart state is an array of `{ id, qty }` (`ShoppingCart.jsx`, `ProductList.jsx`)
