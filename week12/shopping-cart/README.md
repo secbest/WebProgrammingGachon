@@ -8,7 +8,7 @@ Week 11 React State homework (K0126002 Web Programming), kept in the Week 12 fol
 4. Quantity controls: + and - per item (`CartPanel.jsx`)
 5. `ShoppingCart` component: product list + cart panel (`ShoppingCart.jsx`)
 
-The same cart is also a "Shop" section in the school portfolio: https://secbest.github.io/portfolio/
+Live demo: `demo/` (built output, served by GitHub Pages).
 
 ## Run it
 
