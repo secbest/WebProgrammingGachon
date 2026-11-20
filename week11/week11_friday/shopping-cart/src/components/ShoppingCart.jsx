@@ -28,7 +28,7 @@ export default function ShoppingCart() {
   return (
     <section aria-label="Shopping cart">
       <p className="muted">
-        Week 12 React State homework: product list, add / remove, cart sidebar with a total computed from state, and
+        Week 11 React State homework: product list, add / remove, cart sidebar with a total computed from state, and
         quantity controls. Demo items only, nothing is sold.
       </p>
       <div className="shop-layout">
